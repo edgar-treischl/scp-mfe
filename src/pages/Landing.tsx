@@ -67,6 +67,39 @@ export function Landing({ onNavigate }: LandingProps) {
         />
       </div>
 
+      {/* Role Navigation */}
+      <div style={{ marginBottom: '2.5rem', padding: '0 0.5rem' }}>
+        <label
+          style={{
+            display: 'block',
+            fontSize: '0.9rem',
+            fontWeight: '600',
+            color: '#333',
+            marginBottom: '0.85rem',
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            opacity: 0.8,
+          }}
+        >
+          Auswahl der Rolle:
+        </label>
+        <nav className="role-switch" aria-label="Role selector">
+          {[
+            { key: 'Schule', label: 'Schule' },
+            { key: 'Schulaufsicht', label: 'Schulaufsicht' },
+          ].map((option) => (
+            <button
+              key={option.key}
+              type="button"
+              className={option.key === role ? 'role-tab is-active' : 'role-tab'}
+              onClick={() => setRole(option.key as 'Schule' | 'Schulaufsicht')}
+            >
+              {option.label}
+            </button>
+          ))}
+        </nav>
+      </div>
+
       {/* Header */}
       <div style={{ marginBottom: '1rem' }}>
         <h3>Prototyp</h3>
@@ -317,35 +350,6 @@ export function Landing({ onNavigate }: LandingProps) {
         )}
       </div>
       <br/>
-    {/* Role Navigation */}
-      <div style={{ marginBottom: '3rem', padding: '0 0.5rem' }}>
-        <label
-          style={{
-            display: 'block',
-            fontSize: '0.95rem',
-            fontWeight: '500',
-            color: '#333',
-            marginBottom: '0.75rem',
-          }}
-        >
-          Rolle
-        </label>
-        <nav className="role-switch" aria-label="Role selector">
-          {[
-            { key: 'Schule', label: 'Schule' },
-            { key: 'Schulaufsicht', label: 'Schulaufsicht' },
-          ].map((option) => (
-            <button
-              key={option.key}
-              type="button"
-              className={option.key === role ? 'role-tab is-active' : 'role-tab'}
-              onClick={() => setRole(option.key as 'Schule' | 'Schulaufsicht')}
-            >
-              {option.label}
-            </button>
-          ))}
-        </nav>
-      </div>
     </div>
   );
 }

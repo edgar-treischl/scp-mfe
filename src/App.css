@@ -86,31 +86,38 @@
 
 /* Role/View Switch Navigation */
 .role-switch {
-  display: flex;
-  gap: 0.5rem;
+  display: inline-flex;
+  gap: 0;
   width: fit-content;
+  background: #f5f6f7;
+  padding: 0.35rem;
+  border-radius: 10px;
+  border: 1px solid #e5e7eb;
 }
 
 .role-tab {
-  padding: 0.65rem 1.25rem;
-  border: 1px solid var(--form-border);
-  background: white;
+  padding: 0.6rem 1.5rem;
+  border: 1px solid transparent;
+  background: transparent;
   color: var(--form-text-muted);
   font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
   border-radius: 8px;
-  transition: all 0.2s ease;
   white-space: nowrap;
+  position: relative;
+  letter-spacing: 0.02em;
 }
 
-.role-tab:hover {
-  border-color: var(--form-primary);
-  background: #f8f9fa;
+.role-tab:hover:not(.is-active) {
+  background: rgba(30, 138, 217, 0.08);
+  color: var(--form-primary);
 }
 
 .role-tab.is-active {
-  background: var(--form-primary);
-  color: white;
-  border-color: var(--form-primary);
+  background: white;
+  color: var(--form-primary);
+  border: 1px solid #e5e7eb;
+  font-weight: 600;
+  box-shadow: 0 2px 6px rgba(30, 138, 217, 0.1);
 }
