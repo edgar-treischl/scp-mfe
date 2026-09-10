@@ -1,5 +1,6 @@
 import { StatusBadge, Breadcrumb } from '../components';
 import { ExportWordIcon } from '../assets/icons';
+import { formStyles } from '../components/formStyles';
 import type { Submission } from '../types';
 import { exportSubmissionAsDOCX } from '../utils/docxExport';
 
@@ -123,15 +124,28 @@ export function SchuleSubmissionView({ onNavigate }: SchuleSubmissionViewProps) 
         ]}
       />
       
-      <header>
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '2rem', marginBottom: '2rem' }}>
         <div>
           <h1>Meine Zielvereinbarung</h1>
           <p style={{ color: '#666', margin: '0.5rem 0 0 0' }}>
             Schulnummer: {mockSubmission.schulnummer}
           </p>
         </div>
-        <div>
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
           <StatusBadge status={mockSubmission.status} />
+          <button 
+            onClick={handleExport} 
+            style={{
+              ...formStyles.button_secondary,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              whiteSpace: 'nowrap',
+            }}
+          >
+            <ExportWordIcon style={{ width: '1.4rem', height: '1.4rem', strokeWidth: '1.2' }} />
+            Als Word exportieren
+          </button>
         </div>
       </header>
 
@@ -341,10 +355,6 @@ export function SchuleSubmissionView({ onNavigate }: SchuleSubmissionViewProps) 
         {mockSubmission.status === 'draft' && (
           <button onClick={() => onNavigate('form', mockSubmission.schulnummer)}>Bearbeiten</button>
         )}
-        <button onClick={handleExport} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95rem' }}>
-          <ExportWordIcon style={{ width: '1.4rem', height: '1.4rem', strokeWidth: '1.2' }} />
-          Als Word exportieren
-        </button>
       </footer>
     </div>
   );
