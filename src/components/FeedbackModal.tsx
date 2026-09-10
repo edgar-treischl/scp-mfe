@@ -5,6 +5,7 @@ interface FeedbackModalProps {
   schoolName: string;
   schoolLead: string;
   samt: string;
+  programRep: string;
   onClose?: () => void;
   onApprove?: () => void;
   onReject?: () => void;
@@ -113,6 +114,7 @@ export function FeedbackModal({
   schoolName,
   schoolLead,
   samt,
+  programRep,
   onClose,
   onApprove,
   onReject,
@@ -159,8 +161,9 @@ export function FeedbackModal({
             Eingereicht von <span style={formStyles.contractValue}>{schoolLead}</span> der{' '}
             <span style={formStyles.contractValue}>{schoolName}</span>.
           </p>
-          <p style={{ marginTop: 0, marginBottom: '0rem' }}>
-            Schulamt: <span style={formStyles.contractValue}>{samt}</span>
+          <p style={{ marginTop: 0, marginBottom: '1.5rem' }}>
+            Schulamt: <span style={formStyles.contractValue}>{samt}</span>, vertreten durch{' '}
+            <span style={formStyles.contractValue}>{programRep}</span>
           </p>
         </div>
 
