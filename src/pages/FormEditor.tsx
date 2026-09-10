@@ -6,6 +6,7 @@ import { FormGoals } from '../components/form_goals';
 import { FormMeasure } from '../components/form_measure';
 import { GoalsSummary } from '../components/form_goals_summary';
 import { ContractModal } from '../components/ContractModal';
+import { FeedbackModal } from '../components/FeedbackModal';
 import { formStyles } from '../components/formStyles';
 import { NewIcon, LoadTemplateIcon, CopyIcon } from '../assets/icons';
 import { FORM_GOAL_OPTIONS } from '../utils/formConstants';
@@ -477,7 +478,7 @@ interface FormData {
 }
 
 export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
-  const { getFieldMode, submission, setSubmission, loadSubmission } = useFormContext();
+  const { getFieldMode, submission, setSubmission, loadSubmission, role } = useFormContext();
   const fieldMode = getFieldMode();
   const canEditForm = fieldMode === 'edit';
   // Skip landing step if editing an existing submission
@@ -654,6 +655,26 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
     // After modal confirmation, navigate back to landing
     setFormSubmitted(false);
     onNavigate('landing');
+  };
+
+  // Handlers for Schulaufsicht review actions
+  const handleApproveSubmission = () => {
+    // Approve the submission and return to new submissions view
+    setFormSubmitted(false);
+    onNavigate('new');
+  };
+
+  const handleRejectSubmission = () => {
+    // Reject the submission and return to new submissions view
+    setFormSubmitted(false);
+    onNavigate('new');
+  };
+
+  const handleSendFeedback = (feedback: string) => {
+    // Send feedback on the submission and return to new submissions view
+    console.log('Feedback sent:', feedback);
+    setFormSubmitted(false);
+    onNavigate('new');
   };
 
   const handleIstStandChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -1301,8 +1322,26 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
           );
         })()}
 
-        {/* Success Modal - shown after form submission on Step 5 */}
-        {currentStep === 5 && formSubmitted && (
+        {/* Modal shown after form submission on Step 5 */}
+        {/* For Schulaufsicht: Show FeedbackModal for review */}
+        {currentStep === 5 && formSubmitted && role === 'Schulaufsicht' && (
+          <FeedbackModal
+            schoolName={contractSchoolName}
+            schoolLead={contractSchoolLead}
+            samt={contractSamt}
+            programRep={contractProgramRep}
+            onClose={() => {
+              setFormSubmitted(false);
+              onNavigate('new');
+            }}
+            onApprove={handleApproveSubmission}
+            onReject={handleRejectSubmission}
+            onSendFeedback={handleSendFeedback}
+          />
+        )}
+
+        {/* For Schule: Show ContractModal for confirmation */}
+        {currentStep === 5 && formSubmitted && role === 'Schule' && (
           <ContractModal
             schoolName={contractSchoolName}
             schoolLead={contractSchoolLead}

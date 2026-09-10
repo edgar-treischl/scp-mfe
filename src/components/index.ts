@@ -7,5 +7,6 @@ export { FormIststand } from './form_iststand';
 export { FormGoals } from './form_goals';
 export { GoalsSummary } from './form_goals_summary';
 export { ContractModal } from './ContractModal';
+export { FeedbackModal } from './FeedbackModal';
 export { colors, formStyles } from './formStyles';
 export { ReviewField, ReviewChecklist, ReviewSection } from './ReviewField';
