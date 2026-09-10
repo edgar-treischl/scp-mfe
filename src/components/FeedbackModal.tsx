@@ -5,8 +5,6 @@ interface FeedbackModalProps {
   schoolName: string;
   schoolLead: string;
   samt: string;
-  programRep: string;
-  formData?: any;
   onClose?: () => void;
   onApprove?: () => void;
   onReject?: () => void;
