@@ -7,6 +7,7 @@ interface ContractModalProps {
   programRep: string;
   onClose?: () => void;
   onSubmit?: () => void;
+  submitted?: boolean;
 }
 
 const modalStyles = {
@@ -75,6 +76,7 @@ export function ContractModal({
   programRep,
   onClose,
   onSubmit,
+  submitted = false,
 }: ContractModalProps) {
   const currentTime = new Date().toLocaleString('de-DE', {
     day: '2-digit',
@@ -84,6 +86,60 @@ export function ContractModal({
     minute: '2-digit',
     second: '2-digit',
   });
+
+  if (submitted) {
+    return (
+      <div style={modalStyles.overlay} onClick={onClose}>
+        <div style={modalStyles.modalContent} onClick={(e) => e.stopPropagation()}>
+          {onClose && (
+            <button
+              style={modalStyles.closeButton}
+              onClick={onClose}
+              aria-label="Close modal"
+            >
+              ✕
+            </button>
+          )}
+          <div style={{ textAlign: 'center' }}>
+            <div style={{
+              fontSize: '3.5rem',
+              marginBottom: '1rem',
+              lineHeight: 1
+            }}>
+              ❌
+            </div>
+            <h2 style={{
+              ...formStyles.contractTitle,
+              color: colors.success,
+              marginBottom: '1rem'
+            }}>
+              Keine Zielvereinbarung erfolgreich eingereicht! Prototype
+            </h2>
+            <p style={{
+              fontSize: '1rem',
+              color: colors.textMuted,
+              marginBottom: '1.5rem',
+              lineHeight: '1.6'
+            }}>
+              Ihre Zielvereinbarung wurde nicht erfolgreich eingereicht und wird nicht vom Schulamt überprüft.
+            </p>
+          </div>
+
+          <div style={modalStyles.buttonGroup}>
+            {onSubmit && (
+              <button
+                type="button"
+                style={modalStyles.submitButton}
+                onClick={onSubmit}
+              >
+                Zur Startseite
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div style={modalStyles.overlay} onClick={onClose}>

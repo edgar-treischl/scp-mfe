@@ -6,6 +6,7 @@ import { FormGoals } from '../components/form_goals';
 import { FormMeasure } from '../components/form_measure';
 import { GoalsSummary } from '../components/form_goals_summary';
 import { ContractModal } from '../components/ContractModal';
+import { formStyles } from '../components/formStyles';
 import { NewIcon, LoadTemplateIcon, CopyIcon } from '../assets/icons';
 import { FORM_GOAL_OPTIONS } from '../utils/formConstants';
 
@@ -556,6 +557,9 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
   ]);
   const [currentGoalIndex, setCurrentGoalIndex] = useState(0);
   const [currentDraftId, setCurrentDraftId] = useState<string | undefined>(submissionId);
+  const [contractConfirmed, setContractConfirmed] = useState(false);
+  const [dataAccuracyConfirmed, setDataAccuracyConfirmed] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
   const hydratedIdRef = useRef<string | null>(null);
 
   // Hydrate the form from a loaded submission and skip the start screen
@@ -607,10 +611,12 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
     { id: 'goals', title: 'Ziele', component: 'goals' },
     { id: 'measures', title: 'Maßnahmen', component: 'measures' },
     { id: 'summary', title: 'Übersicht', component: 'summary' },
+    { id: 'contract_content', title: 'Zielvereinbarung Übersicht', component: 'contract_content' },
     { id: 'contract', title: 'Zielvereinbarung', component: 'contract' },
   ];
 
   const totalSteps = steps.length;
+  const userVisibleSteps = 5; // Only steps 1-5 are visible to users (excluding landing and internal modal)
   const currentStepData = steps[currentStep];
 
   const handleStartNew = () => {
@@ -627,9 +633,27 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
 
   const handlePreviousStep = () => {
     if (currentStep > 0) {
+      // Reset confirmation checkboxes when leaving Step 5
+      if (currentStep === 5) {
+        setContractConfirmed(false);
+        setDataAccuracyConfirmed(false);
+        setFormSubmitted(false);
+      }
       setCurrentStep(currentStep - 1);
       window.scrollTo(0, 0);
     }
+  };
+
+  const handleSubmitForm = () => {
+    // Mark form as submitted and show modal (stay on step 5)
+    setFormSubmitted(true);
+    window.scrollTo(0, 0);
+  };
+
+  const handleSubmitConfirmed = () => {
+    // After modal confirmation, navigate back to landing
+    setFormSubmitted(false);
+    onNavigate('landing');
   };
 
   const handleIstStandChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -826,9 +850,9 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
       
       <header style={styles.header}>
         <div style={styles.header_meta}>
-          {currentStep > 0 && (
+          {currentStep > 0 && currentStep < totalSteps - 1 && (
             <span style={styles.status_badge}>
-              Schritt {currentStep} von {totalSteps - 1}: {currentStepData.title}
+              Schritt {currentStep} von {userVisibleSteps}: {currentStepData.title}
             </span>
           )}
         </div>
@@ -1174,15 +1198,122 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
           />
         )}
 
-        {/* Contract Step - Final Step */}
-        {currentStep === 5 && (
+        {/* Contract Content Step */}
+        {currentStep === 5 && (() => {
+          const currentTime = new Date().toLocaleString('de-DE', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          });
+          return (
+            <div>
+              <h2 style={formStyles.contractTitle}>
+                Neue Zielvereinbarung (ZV) im Startchancen-Programm nun einreichen:
+              </h2>
+              <div style={formStyles.contractPreview}>
+                <p style={{ marginTop: 0, marginBottom: '1.5rem' }}>
+                  Zwischen <span style={formStyles.contractValue}>{contractSchoolLead}</span> als Schulleitung der{' '}
+                  <span style={formStyles.contractValue}>{contractSchoolName}</span>.
+                </p>
+                <p style={{ marginTop: 0, marginBottom: '1.5rem' }}>
+                  Und dem <span style={formStyles.contractValue}>{contractSamt}</span>, vertreten durch{' '}
+                  <span style={formStyles.contractValue}>{contractProgramRep}</span>
+                </p>
+                <p style={{ marginTop: 0, marginBottom: '0rem' }}>
+                  Die Zielvereinbarung der folgenden Seiten wird verbindlich geschlossen.
+                </p>
+              </div>
+              <div style={{ fontSize: '0.9rem', color: colors.textMuted, marginBottom: '2rem', fontStyle: 'italic' }}>
+                Zeitstempel: {currentTime}
+              </div>
+
+              <div style={{ 
+                background: '#f8f9fa', 
+                border: `1px solid ${colors.border}`,
+                borderRadius: '6px',
+                padding: '1.5rem',
+                marginBottom: '1.5rem'
+              }}>
+                <h3 style={{ 
+                  fontSize: '1rem', 
+                  fontWeight: '600', 
+                  color: colors.text, 
+                  marginTop: 0,
+                  marginBottom: '1.5rem' 
+                }}>
+                  Bestätigung erforderlich
+                </h3>
+
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', marginBottom: '1rem' }}>
+                  <input
+                    type="checkbox"
+                    id="contractConfirm"
+                    checked={contractConfirmed}
+                    onChange={(e) => setContractConfirmed(e.target.checked)}
+                    style={{ 
+                      marginTop: '0.35rem',
+                      cursor: 'pointer',
+                      width: '18px',
+                      height: '18px',
+                      flexShrink: 0
+                    }}
+                  />
+                  <label htmlFor="contractConfirm" style={{ 
+                    cursor: 'pointer', 
+                    fontSize: '0.95rem',
+                    color: colors.text,
+                    lineHeight: '1.5',
+                    margin: 0
+                  }}>
+                    Ich bestätige, dass ich die Zielvereinbarung gelesen habe und alle Informationen korrekt sind.
+                  </label>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', marginBottom: 0 }}>
+                  <input
+                    type="checkbox"
+                    id="dataAccuracyConfirm"
+                    checked={dataAccuracyConfirmed}
+                    onChange={(e) => setDataAccuracyConfirmed(e.target.checked)}
+                    style={{ 
+                      marginTop: '0.35rem',
+                      cursor: 'pointer',
+                      width: '18px',
+                      height: '18px',
+                      flexShrink: 0
+                    }}
+                  />
+                  <label htmlFor="dataAccuracyConfirm" style={{ 
+                    cursor: 'pointer', 
+                    fontSize: '0.95rem',
+                    color: colors.text,
+                    lineHeight: '1.5',
+                    margin: 0
+                  }}>
+                    Ich bestätige, dass alle eingegebenen Daten aktuell und genau sind.
+                  </label>
+                </div>
+              </div>
+            </div>
+          );
+        })()}
+
+        {/* Success Modal - shown after form submission on Step 5 */}
+        {currentStep === 5 && formSubmitted && (
           <ContractModal
             schoolName={contractSchoolName}
             schoolLead={contractSchoolLead}
             samt={contractSamt}
             programRep={contractProgramRep}
-            onClose={handlePreviousStep}
-            onSubmit={handleNextStep}
+            submitted={true}
+            onClose={() => {
+              setFormSubmitted(false);
+              onNavigate('landing');
+            }}
+            onSubmit={handleSubmitConfirmed}
           />
         )}
 
@@ -1215,18 +1346,31 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
                   ← Zurück
                 </button>
               )}
-              {currentStep > 0 && (
+            {currentStep > 0 && currentStep < totalSteps - 1 && (
                 <span style={{ color: colors.textMuted, fontSize: '0.9rem', minWidth: '80px' }}>
-                  Schritt {currentStep} / {totalSteps - 1}
+                  Schritt {currentStep} / {userVisibleSteps}
                 </span>
               )}
               {currentStep < totalSteps - 1 && (
                 <button 
                   type="button" 
-                  onClick={handleNextStep}
-                  style={styles.button_secondary}
+                  onClick={currentStep === 5 ? handleSubmitForm : handleNextStep}
+                  disabled={currentStep === 5 && (!contractConfirmed || !dataAccuracyConfirmed)}
+                  style={{
+                    ...styles.button_secondary,
+                    ...(currentStep === 5 ? {
+                      ...styles.button_primary,
+                      opacity: (!contractConfirmed || !dataAccuracyConfirmed) ? 0.6 : 1
+                    } : {}),
+                    ...(currentStep === 5 && (!contractConfirmed || !dataAccuracyConfirmed) ? {
+                      background: colors.disabled,
+                      color: colors.textMuted,
+                      cursor: 'not-allowed',
+                      border: `1px solid ${colors.border}`,
+                    } : {})
+                  }}
                 >
-                  Weiter →
+                  {currentStep === 5 ? 'Abschicken' : 'Weiter →'}
                 </button>
               )}
             </div>
