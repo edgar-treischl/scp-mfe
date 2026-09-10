@@ -1,0 +1,116 @@
+:root {
+  --form-primary: #1e8ad9;
+  --form-success: #64d4c6;
+  --form-danger: #dc3545;
+  --form-border: #dee2e6;
+  --form-text: #212529;
+  --form-text-muted: #6c757d;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --form-text: #f3f4f6;
+    --form-text-muted: #9ca3af;
+    --form-border: #4b5563;
+  }
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-nav {
+  padding: 1rem;
+  border-bottom: 1px solid var(--form-border);
+  display: flex;
+  gap: 1rem;
+}
+
+.app-main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.app-button {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border: 1px solid var(--form-border);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--form-text);
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.app-button:hover:not(:disabled) {
+  background: #f0f0f0;
+  border-color: var(--form-primary);
+}
+
+.app-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.app-section {
+  margin: 2rem 0;
+  padding: 1rem;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.app-footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--form-border);
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.app-form {
+  padding: 1rem;
+}
+
+/* Role/View Switch Navigation */
+.role-switch {
+  display: flex;
+  gap: 0.5rem;
+  width: fit-content;
+}
+
+.role-tab {
+  padding: 0.65rem 1.25rem;
+  border: 1px solid var(--form-border);
+  background: white;
+  color: var(--form-text-muted);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.role-tab:hover {
+  border-color: var(--form-primary);
+  background: #f8f9fa;
+}
+
+.role-tab.is-active {
+  background: var(--form-primary);
+  color: white;
+  border-color: var(--form-primary);
+}
