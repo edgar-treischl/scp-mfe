@@ -1149,6 +1149,27 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
               setCurrentGoalIndex(updatedGoals.length - 1);
               setCurrentStep(2);
             }}
+            onDeleteGoal={(index) => {
+              if (goals.length === 1) {
+                // Delete the only goal and go back to step 2
+                const newGoal: GoalEntry = {
+                  selectedGoal: '',
+                  questionModules: [createEmptyQuestionModule()],
+                  measureModules: [createEmptyMeasureModule()],
+                };
+                setGoals([newGoal]);
+                setCurrentGoalIndex(0);
+                setCurrentStep(2);
+              } else {
+                // Delete the goal and stay at summary
+                const updatedGoals = goals.filter((_, i) => i !== index);
+                setGoals(updatedGoals);
+                // Adjust currentGoalIndex if necessary
+                if (currentGoalIndex >= updatedGoals.length) {
+                  setCurrentGoalIndex(updatedGoals.length - 1);
+                }
+              }
+            }}
             mode={fieldMode}
           />
         )}

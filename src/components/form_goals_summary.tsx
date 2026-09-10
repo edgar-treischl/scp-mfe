@@ -38,10 +38,11 @@ interface GoalsSummaryProps {
   goals: GoalEntry[];
   onEditGoal: (index: number) => void;
   onAddGoal: () => void;
+  onDeleteGoal?: (index: number) => void;
   mode?: FieldMode;
 }
 
-export function GoalsSummary({ goals, onEditGoal, onAddGoal, mode = 'edit' }: GoalsSummaryProps) {
+export function GoalsSummary({ goals, onEditGoal, onAddGoal, onDeleteGoal, mode = 'edit' }: GoalsSummaryProps) {
   const canEdit = mode === 'edit';
 
   return (
@@ -62,13 +63,29 @@ export function GoalsSummary({ goals, onEditGoal, onAddGoal, mode = 'edit' }: Go
                 </p>
               </div>
               {canEdit && (
-                <button
-                  type="button"
-                  onClick={() => onEditGoal(index)}
-                  style={formStyles.button_secondary}
-                >
-                  Bearbeiten
-                </button>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <button
+                    type="button"
+                    onClick={() => onEditGoal(index)}
+                    style={formStyles.button_secondary}
+                  >
+                    Bearbeiten
+                  </button>
+                  {goals.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={() => onDeleteGoal?.(index)}
+                      style={{
+                        ...formStyles.button_secondary,
+                        background: '#dc3545',
+                        color: 'white',
+                        border: 'none',
+                      }}
+                    >
+                      Löschen
+                    </button>
+                  )}
+                </div>
               )}
             </div>
 
