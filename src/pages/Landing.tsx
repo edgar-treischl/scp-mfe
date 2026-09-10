@@ -11,8 +11,8 @@ const MOCK_NEW_SUBMISSIONS = [
 ];
 
 
-const contractSchoolName = 'Zauberberg Grundschule';
-const contractSamt = 'Staatl. Schulamt Zauberberg';
+const contractSchoolName = 'Max Mustermann Grundschule';
+const contractSamt = 'Staatl. Schulamt XXX';
 
 
 interface LandingProps {
@@ -137,8 +137,7 @@ export function Landing({ onNavigate }: LandingProps) {
         <div style={formStyles.contractSection}>
           <div style={formStyles.contractPreview}>
             <p style={{ marginTop: 0, marginBottom: '1.5rem' }}>
-              Diese App bietet Ihnen als Schulaufsicht einen zentralen Überblick über die <span style={formStyles.contractValue}>Ziel- und Handlungsvereinbarungen (ZHV)</span> der Ihnen zugeordneten Schulen im 
-               <span style={formStyles.contractValue}> Startchancen-Programm (SCP)</span> . 
+              Diese App bietet Ihnen als Schulaufsicht einen zentralen Überblick über die <span style={formStyles.contractValue}>Ziel- und Handlungsvereinbarungen (ZHV)</span> der Ihnen zugeordneten Schulen im Startchancen-Programm (SCP). 
             </p>
             <p style={{ marginTop: 0, marginBottom: '1.5rem' }}>
               Sie sehen auf einen Blick, welche ZHV {' '}

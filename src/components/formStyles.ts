@@ -19,7 +19,7 @@ export const formStyles = {
     marginBottom: '2.5rem',
   },
   section_title: {
-    fontSize: '1.25rem',
+    fontSize: '1.45rem',
     fontWeight: '600',
     color: colors.text,
     marginBottom: '1.5rem',
@@ -27,9 +27,9 @@ export const formStyles = {
   label: {
     display: 'block' as const,
     marginBottom: '0.5rem',
-    fontWeight: '500',
+    fontWeight: '600',
     color: colors.text,
-    fontSize: '0.95rem',
+    fontSize: '1.05rem',
   },
   required: {
     color: colors.danger,
@@ -37,7 +37,7 @@ export const formStyles = {
   input: {
     width: '100%',
     padding: '0.65rem 0.75rem',
-    fontSize: '0.95rem',
+    fontSize: '1.0rem',
     border: `1px solid ${colors.border}`,
     borderRadius: '6px',
     fontFamily: 'inherit',
@@ -166,7 +166,7 @@ export const formStyles = {
     letterSpacing: '0.75px',
   },
   contractPreview: {
-    fontSize: '0.95rem',
+    fontSize: '1.15rem',
     lineHeight: '1.8',
     color: colors.text,
     fontStyle: 'italic' as const,
