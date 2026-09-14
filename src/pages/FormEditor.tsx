@@ -6,7 +6,6 @@ import { FormGoals } from '../components/form_goals';
 import { FormMeasure } from '../components/form_measure';
 import { GoalsSummary } from '../components/form_goals_summary';
 import { ContractModal } from '../components/ContractModal';
-import { FeedbackModal } from '../components/FeedbackModal';
 import { formStyles } from '../components/formStyles';
 import { NewIcon, LoadTemplateIcon, CopyIcon } from '../assets/icons';
 import { FORM_GOAL_OPTIONS } from '../utils/formConstants';
@@ -561,6 +560,7 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
   const [contractConfirmed, setContractConfirmed] = useState(false);
   const [dataAccuracyConfirmed, setDataAccuracyConfirmed] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [feedbackText, setFeedbackText] = useState('');
   const hydratedIdRef = useRef<string | null>(null);
 
   // Hydrate the form from a loaded submission and skip the start screen
@@ -657,21 +657,7 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
     onNavigate('landing');
   };
 
-  // Handlers for Schulaufsicht review actions
-  const handleApproveSubmission = () => {
-    // Approve the submission and return to new submissions view
-    setFormSubmitted(false);
-    onNavigate('new');
-  };
-
-  const handleRejectSubmission = () => {
-    // Reject the submission and return to new submissions view
-    setFormSubmitted(false);
-    onNavigate('new');
-  };
-
   const handleSendFeedback = (feedback: string) => {
-    // Send feedback on the submission and return to new submissions view
     console.log('Feedback sent:', feedback);
     setFormSubmitted(false);
     onNavigate('new');
@@ -1219,7 +1205,7 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
           />
         )}
 
-        {/* Contract Content Step */}
+        {/* Step 5: Contract Content or Feedback */}
         {currentStep === 5 && (() => {
           const currentTime = new Date().toLocaleString('de-DE', {
             day: '2-digit',
@@ -1229,6 +1215,65 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
             minute: '2-digit',
             second: '2-digit',
           });
+
+          // For Schulaufsicht: Show feedback form inline
+          if (role === 'Schulaufsicht') {
+            return (
+              <div>
+                <h2 style={formStyles.contractTitle}>
+                  Zielvereinbarung zur Überprüfung
+                </h2>
+
+                {/* School Information Section */}
+                <div style={{ marginBottom: '2rem', paddingBottom: '1.5rem', borderBottom: `1px solid ${colors.border}` }}>
+                  <p style={{ marginTop: 0, marginBottom: '1.5rem' }}>
+                    Eingereicht von <span style={formStyles.contractValue}>{contractSchoolLead}</span> der{' '}
+                    <span style={formStyles.contractValue}>{contractSchoolName}</span>.
+                  </p>
+                  <p style={{ marginTop: 0, marginBottom: '1.5rem' }}>
+                    Schulamt: <span style={formStyles.contractValue}>{contractSamt}</span>, vertreten durch{' '}
+                    <span style={formStyles.contractValue}>{contractProgramRep}</span>
+                  </p>
+                </div>
+
+                {/* Submission Timestamp */}
+                <div style={{ fontSize: '0.9rem', color: colors.textMuted, marginBottom: '2rem', fontStyle: 'italic' }}>
+                  Eingereicht am: {currentTime}
+                </div>
+
+                {/* Feedback Textarea */}
+                <div style={{ marginBottom: '2rem' }}>
+                  <label htmlFor="feedbackInput" style={{ 
+                    display: 'block',
+                    fontSize: '0.95rem',
+                    fontWeight: '600',
+                    color: '#333',
+                    marginBottom: '0.75rem',
+                  }}>
+                    Rückmeldung zur Zielvereinbarung
+                  </label>
+                  <textarea
+                    id="feedbackInput"
+                    value={feedbackText}
+                    onChange={(e) => setFeedbackText(e.target.value)}
+                    placeholder="Geben Sie hier Ihre Rückmeldung zur eingereichten Zielvereinbarung ein..."
+                    style={{
+                      width: '100%',
+                      padding: '1rem',
+                      borderRadius: '4px',
+                      border: `1px solid ${colors.border}`,
+                      fontFamily: 'inherit',
+                      fontSize: '0.95rem',
+                      minHeight: '120px',
+                      resize: 'vertical' as const,
+                    }}
+                  />
+                </div>
+              </div>
+            );
+          }
+
+          // For Schule: Show contract form
           return (
             <div>
               <h2 style={formStyles.contractTitle}>
@@ -1344,24 +1389,6 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
           );
         })()}
 
-        {/* Modal shown after form submission on Step 5 */}
-        {/* For Schulaufsicht: Show FeedbackModal for review */}
-        {currentStep === 5 && formSubmitted && role === 'Schulaufsicht' && (
-          <FeedbackModal
-            schoolName={contractSchoolName}
-            schoolLead={contractSchoolLead}
-            samt={contractSamt}
-            programRep={contractProgramRep}
-            onClose={() => {
-              setFormSubmitted(false);
-              onNavigate('new');
-            }}
-            onApprove={handleApproveSubmission}
-            onReject={handleRejectSubmission}
-            onSendFeedback={handleSendFeedback}
-          />
-        )}
-
         {/* For Schule: Show ContractModal for confirmation */}
         {currentStep === 5 && formSubmitted && role === 'Schule' && (
           <ContractModal
@@ -1415,15 +1442,15 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
               {currentStep < totalSteps - 1 && (
                 <button 
                   type="button" 
-                  onClick={currentStep === 5 ? handleSubmitForm : handleNextStep}
-                  disabled={currentStep === 5 && !contractConfirmed}
+                  onClick={currentStep === 5 ? (role === 'Schulaufsicht' ? () => handleSendFeedback(feedbackText) : handleSubmitForm) : handleNextStep}
+                  disabled={currentStep === 5 && (role === 'Schulaufsicht' ? !feedbackText.trim() : !contractConfirmed)}
                   style={{
                     ...styles.button_secondary,
                     ...(currentStep === 5 ? {
                       ...styles.button_primary,
-                      opacity: !contractConfirmed ? 0.6 : 1
+                      opacity: (role === 'Schulaufsicht' ? !feedbackText.trim() : !contractConfirmed) ? 0.6 : 1
                     } : {}),
-                    ...(currentStep === 5 && !contractConfirmed ? {
+                    ...((currentStep === 5 && (role === 'Schulaufsicht' ? !feedbackText.trim() : !contractConfirmed)) ? {
                       background: colors.disabled,
                       color: colors.textMuted,
                       cursor: 'not-allowed',
@@ -1431,7 +1458,7 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
                     } : {})
                   }}
                 >
-                  {currentStep === 5 ? 'Abschicken' : 'Weiter →'}
+                  {currentStep === 5 ? (role === 'Schulaufsicht' ? 'Rückmeldung senden' : 'Abschicken') : 'Weiter →'}
                 </button>
               )}
             </div>

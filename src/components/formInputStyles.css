@@ -374,6 +374,11 @@ textarea:focus-visible {
   border-color: #64d4c6;
 }
 
+.review-checklist-item.unchecked {
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+}
+
 .review-checklist-icon {
   display: flex;
   align-items: center;
@@ -396,8 +401,9 @@ textarea:focus-visible {
 }
 
 .review-checklist-item.unchecked .review-checklist-icon {
-  background-color: #e9ecef;
+  background-color: #ffffff;
   border-color: #dee2e6;
+  color: #6c757d;
 }
 
 .review-grid {
