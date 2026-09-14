@@ -302,7 +302,7 @@ export function Data({ onNavigate }: DataProps) {
           <p>
             <strong>Ansprechpartner:</strong>{" "}
             <a
-              href="mailto:edgar.treischl@isb.bayern.de"
+              href="mailto:hans.bär@isb.bayern.de"
               style={{
                 color: "#1E8AD9",
                 textDecoration: "none",
@@ -314,7 +314,7 @@ export function Data({ onNavigate }: DataProps) {
                 e.currentTarget.style.textDecoration = "none";
               }}
             >
-              Dr. Edgar Treischl
+              Who is in charge?
             </a>
           </p>
 

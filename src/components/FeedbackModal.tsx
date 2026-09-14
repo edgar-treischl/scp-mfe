@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { formStyles, colors } from './formStyles';
 
 interface FeedbackModalProps {
@@ -7,9 +6,7 @@ interface FeedbackModalProps {
   samt: string;
   programRep: string;
   onClose?: () => void;
-  onApprove?: () => void;
-  onReject?: () => void;
-  onSendFeedback?: (feedback: string) => void;
+  onSendFeedback?: () => void;
 }
 
 const modalStyles = {
@@ -89,19 +86,8 @@ const modalStyles = {
     marginTop: '2rem',
     flexWrap: 'wrap' as const,
   },
-  approveButton: {
-    ...formStyles.button_primary,
-    padding: '0.75rem 1.5rem',
-    backgroundColor: '#10b981',
-  },
-  rejectButton: {
-    ...formStyles.button_secondary,
-    padding: '0.75rem 1.5rem',
-    color: '#dc2626',
-    borderColor: '#dc2626',
-  },
   feedbackButton: {
-    ...formStyles.button_secondary,
+    ...formStyles.button_primary,
     padding: '0.75rem 1.5rem',
   },
   cancelButton: {
@@ -116,12 +102,8 @@ export function FeedbackModal({
   samt,
   programRep,
   onClose,
-  onApprove,
-  onReject,
   onSendFeedback,
 }: FeedbackModalProps) {
-  const [feedbackText, setFeedbackText] = useState('');
-
   const currentTime = new Date().toLocaleString('de-DE', {
     day: '2-digit',
     month: '2-digit',
@@ -130,13 +112,6 @@ export function FeedbackModal({
     minute: '2-digit',
     second: '2-digit',
   });
-
-  const handleSendFeedback = () => {
-    if (feedbackText.trim()) {
-      onSendFeedback?.(feedbackText);
-      setFeedbackText('');
-    }
-  };
 
   return (
     <div style={modalStyles.overlay} onClick={onClose}>
@@ -172,19 +147,6 @@ export function FeedbackModal({
           Eingereicht am: {currentTime}
         </div>
 
-        {/* Feedback Section */}
-        <div style={modalStyles.section}>
-          <label style={modalStyles.feedbackLabel}>
-            Rückmeldung zur Zielvereinbarung:
-          </label>
-          <textarea
-            style={modalStyles.feedbackTextarea}
-            placeholder="Geben Sie Ihre Rückmeldung, Kommentare oder Verbesserungsvorschläge ein..."
-            value={feedbackText}
-            onChange={(e) => setFeedbackText(e.target.value)}
-          />
-        </div>
-
         {/* Action Buttons */}
         <div style={modalStyles.lastSection}>
           <div style={modalStyles.buttonGroup}>
@@ -201,28 +163,9 @@ export function FeedbackModal({
               <button
                 type="button"
                 style={modalStyles.feedbackButton}
-                onClick={handleSendFeedback}
-                disabled={!feedbackText.trim()}
+                onClick={onSendFeedback}
               >
                 Rückmeldung senden
-              </button>
-            )}
-            {onReject && (
-              <button
-                type="button"
-                style={modalStyles.rejectButton}
-                onClick={onReject}
-              >
-                Ablehnen
-              </button>
-            )}
-            {onApprove && (
-              <button
-                type="button"
-                style={modalStyles.approveButton}
-                onClick={onApprove}
-              >
-                Genehmigen
               </button>
             )}
           </div>
