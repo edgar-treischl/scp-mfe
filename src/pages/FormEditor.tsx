@@ -14,7 +14,7 @@ import { FORM_GOAL_OPTIONS } from '../utils/formConstants';
 import type { Submission } from '../types';
 
 interface FormEditorProps {
-  onNavigate: (view: 'landing' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'all', submissionId?: string) => void;
+  onNavigate: (view: 'landing' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'all' | 'data', submissionId?: string) => void;
   submissionId?: string;
 }
 
@@ -1232,7 +1232,7 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
           return (
             <div>
               <h2 style={formStyles.contractTitle}>
-                Neue Zielvereinbarung (ZV) im Startchancen-Programm nun einreichen:
+                Die neue Zielvereinbarung nun einreichen:
               </h2>
               <div style={formStyles.contractPreview}>
                 <p style={{ marginTop: 0, marginBottom: '1.5rem' }}>
@@ -1244,7 +1244,7 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
                   <span style={formStyles.contractValue}>{contractProgramRep}</span>
                 </p>
                 <p style={{ marginTop: 0, marginBottom: '0rem' }}>
-                  Die Zielvereinbarung der folgenden Seiten wird verbindlich geschlossen.
+                  Die Zielvereinbarung wird verbindlich geschlossen.
                 </p>
               </div>
               <div style={{ fontSize: '0.9rem', color: colors.textMuted, marginBottom: '2rem', fontStyle: 'italic' }}>
@@ -1289,7 +1289,29 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
                     lineHeight: '1.5',
                     margin: 0
                   }}>
-                    Ich bestätige, dass ich die Zielvereinbarung gelesen habe und alle Informationen korrekt sind.
+                    Ich habe die Informationen zur{' '}
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        const baseUrl = window.location.href.split('#')[0];
+                        window.open(`${baseUrl}#/data`, '_blank');
+                      }}
+                      style={{
+                        color: '#1E8AD9',
+                        textDecoration: 'none',
+                        cursor: 'pointer'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.textDecoration = 'underline';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.textDecoration = 'none';
+                      }}
+                    >
+                      Datenverarbeitung
+                    </a>
+                    {' '}gelesen und willige ein.
                   </label>
                 </div>
 
@@ -1314,7 +1336,7 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
                     lineHeight: '1.5',
                     margin: 0
                   }}>
-                    Ich bestätige, dass alle eingegebenen Daten aktuell und genau sind.
+                    Ich habe Interesse an einer Vernetzung mit anderen Schulen mit gleichen Zielen und Maßnahmen (freiwillig).
                   </label>
                 </div>
               </div>
@@ -1394,14 +1416,14 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
                 <button 
                   type="button" 
                   onClick={currentStep === 5 ? handleSubmitForm : handleNextStep}
-                  disabled={currentStep === 5 && (!contractConfirmed || !dataAccuracyConfirmed)}
+                  disabled={currentStep === 5 && !contractConfirmed}
                   style={{
                     ...styles.button_secondary,
                     ...(currentStep === 5 ? {
                       ...styles.button_primary,
-                      opacity: (!contractConfirmed || !dataAccuracyConfirmed) ? 0.6 : 1
+                      opacity: !contractConfirmed ? 0.6 : 1
                     } : {}),
-                    ...(currentStep === 5 && (!contractConfirmed || !dataAccuracyConfirmed) ? {
+                    ...(currentStep === 5 && !contractConfirmed ? {
                       background: colors.disabled,
                       color: colors.textMuted,
                       cursor: 'not-allowed',

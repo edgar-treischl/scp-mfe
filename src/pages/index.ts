@@ -7,3 +7,4 @@ export { AufsichtAll as SubmissionAll } from './AufsichtAll';
 export { SchuleSubmissionView } from './SchuleSubmissionView';
 export { AufsichtSubmissionView } from './AufsichtSubmissionView';
 export { About } from './About';
+export { Data } from './Data';

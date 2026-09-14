@@ -1,22 +1,31 @@
-import { useState } from 'react';
-import { Landing, FormEditor, FormEval, SubmissionHistory, SchuleSubmissionView, AufsichtSubmissionView, SubmissionNew, SubmissionAll, About } from './pages';
+import { useState, useEffect } from 'react';
+import { Landing, FormEditor, FormEval, SubmissionHistory, SchuleSubmissionView, AufsichtSubmissionView, SubmissionNew, SubmissionAll, About, Data } from './pages';
 import { Footer } from './components';
 import { FormContextProvider } from './context/FormContext';
 import { useFormContext } from './context/formContextValue';
 import './components/formInputStyles.css';
 import './App.css';
 
-type View = 'landing' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'all';
+type View = 'landing' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'all' | 'data';
 
+function getInitialView(): View {
+  const hash = window.location.hash.slice(1);
+  const route = hash.split('/')[1];
+  if (['form', 'history', 'view', 'about', 'eval', 'new', 'all', 'data'].includes(route)) {
+    return route as View;
+  }
+  return 'landing';
+}
 
 function AppContent() {
-  const [currentView, setCurrentView] = useState<View>('landing');
+  const [currentView, setCurrentView] = useState<View>(getInitialView());
   const [selectedSubmissionId, setSelectedSubmissionId] = useState<string | null>(null);
   const { role } = useFormContext();
 
   const handleNavigate = (view: View, submissionId?: string) => {
     setCurrentView(view);
     setSelectedSubmissionId(submissionId ?? null);
+    window.location.hash = `/${view}${submissionId ? `/${submissionId}` : ''}`;
   };
 
   const renderView = () => {
@@ -39,6 +48,8 @@ function AppContent() {
           : <AufsichtSubmissionView schulnummer={selectedSubmissionId} onNavigate={handleNavigate} />;
       case 'about':
         return <About onNavigate={handleNavigate} />;
+      case 'data':
+        return <Data onNavigate={handleNavigate} />;
       default:
         return <Landing onNavigate={handleNavigate} />;
     }

@@ -113,7 +113,7 @@ export function ContractModal({
               color: colors.success,
               marginBottom: '1rem'
             }}>
-              Keine Zielvereinbarung erfolgreich eingereicht! Prototype
+              Zielvereinbarung nicht erfolgreich eingereicht!
             </h2>
             <p style={{
               fontSize: '1rem',
