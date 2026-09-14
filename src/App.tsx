@@ -26,6 +26,7 @@ function AppContent() {
     setCurrentView(view);
     setSelectedSubmissionId(submissionId ?? null);
     window.location.hash = `/${view}${submissionId ? `/${submissionId}` : ''}`;
+    window.scrollTo(0, 0);
   };
 
   const renderView = () => {

@@ -17,7 +17,7 @@ export function Footer({ onNavigate }: FooterProps) {
     >
       <div style={{ display: 'flex', justifyContent: 'center', gap: '1.5rem' }}>
         <a
-          href="https://github.com/edgar-treischl/scp-form-mfe"
+          href="https://github.com/edgar-treischl/scp-mfe"
           target="_blank"
           rel="noopener noreferrer"
           style={{
