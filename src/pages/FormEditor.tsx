@@ -1216,8 +1216,8 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
             second: '2-digit',
           });
 
-          // For Schulaufsicht: Show feedback form inline
-          if (role === 'Schulaufsicht') {
+          // For schulamt: Show feedback form inline
+          if (role === 'schulamt') {
             return (
               <div>
                 <h2 style={formStyles.contractTitle}>
@@ -1389,8 +1389,8 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
           );
         })()}
 
-        {/* For Schule: Show ContractModal for confirmation */}
-        {currentStep === 5 && formSubmitted && role === 'Schule' && (
+        {/* For schule: Show ContractModal for confirmation */}
+        {currentStep === 5 && formSubmitted && role === 'schule' && (
           <ContractModal
             schoolName={contractSchoolName}
             schoolLead={contractSchoolLead}
@@ -1442,15 +1442,15 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
               {currentStep < totalSteps - 1 && (
                 <button 
                   type="button" 
-                  onClick={currentStep === 5 ? (role === 'Schulaufsicht' ? () => handleSendFeedback(feedbackText) : handleSubmitForm) : handleNextStep}
-                  disabled={currentStep === 5 && (role === 'Schulaufsicht' ? !feedbackText.trim() : !contractConfirmed)}
+                  onClick={currentStep === 5 ? (role === 'schulamt' ? () => handleSendFeedback(feedbackText) : handleSubmitForm) : handleNextStep}
+                  disabled={currentStep === 5 && (role === 'schulamt' ? !feedbackText.trim() : !contractConfirmed)}
                   style={{
                     ...styles.button_secondary,
                     ...(currentStep === 5 ? {
                       ...styles.button_primary,
-                      opacity: (role === 'Schulaufsicht' ? !feedbackText.trim() : !contractConfirmed) ? 0.6 : 1
+                      opacity: (role === 'schulamt' ? !feedbackText.trim() : !contractConfirmed) ? 0.6 : 1
                     } : {}),
-                    ...((currentStep === 5 && (role === 'Schulaufsicht' ? !feedbackText.trim() : !contractConfirmed)) ? {
+                    ...((currentStep === 5 && (role === 'schulamt' ? !feedbackText.trim() : !contractConfirmed)) ? {
                       background: colors.disabled,
                       color: colors.textMuted,
                       cursor: 'not-allowed',
@@ -1458,7 +1458,7 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
                     } : {})
                   }}
                 >
-                  {currentStep === 5 ? (role === 'Schulaufsicht' ? 'Rückmeldung senden' : 'Abschicken') : 'Weiter →'}
+                  {currentStep === 5 ? (role === 'schulamt' ? 'Rückmeldung senden' : 'Abschicken') : 'Weiter →'}
                 </button>
               )}
             </div>

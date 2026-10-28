@@ -30,8 +30,8 @@ export function FormContextProvider({
   const getFieldMode = (): FieldMode => {
     if (!submission) return 'edit';
 
-    // Schule logic
-    if (role === 'Schule') {
+    // schule logic
+    if (role === 'schule') {
       if (submission.status === 'draft' || submission.status === 'changes_requested') {
         return 'edit';
       }
@@ -40,8 +40,8 @@ export function FormContextProvider({
       }
     }
 
-    // Schulaufsicht logic
-    if (role === 'Schulaufsicht') {
+    // schulamt logic
+    if (role === 'schulamt') {
       if (submission.status === 'pending_review' || submission.status === 'draft') {
         return 'review';
       }
@@ -98,7 +98,7 @@ export function FormContextProvider({
       submissionId: submission.schulnummer,
       fieldPath,
       text: trimmed,
-      author: role === 'Schulaufsicht' ? 'Schulaufsicht' : submission.owner,
+      author: role === 'schulamt' ? 'Schulaufsicht' : submission.owner,
       authorRole: role,
       createdAt: existing?.createdAt ?? new Date(),
       resolved: false,

@@ -41,8 +41,8 @@ export function WorkflowActions(): React.ReactNode {
         flexWrap: 'wrap',
       }}
     >
-      {/* Schule Actions */}
-      {role === 'Schule' && submission.status === 'draft' && (
+      {/* schule Actions */}
+      {role === 'schule' && submission.status === 'draft' && (
         <button
           onClick={handleSubmitForReview}
           style={{
@@ -67,7 +67,7 @@ export function WorkflowActions(): React.ReactNode {
         </button>
       )}
 
-      {role === 'Schule' && submission.status === 'changes_requested' && (
+      {role === 'schule' && submission.status === 'changes_requested' && (
         <button
           onClick={handleResubmit}
           style={{
@@ -92,8 +92,8 @@ export function WorkflowActions(): React.ReactNode {
         </button>
       )}
 
-      {/* Schulaufsicht Actions */}
-      {role === 'Schulaufsicht' && submission.status === 'pending_review' && (
+      {/* schulamt Actions */}
+      {role === 'schulamt' && submission.status === 'pending_review' && (
         <>
           <button
             onClick={handleApprove}

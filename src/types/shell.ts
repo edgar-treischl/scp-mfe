@@ -1,4 +1,4 @@
-type ShellRole = 'stmuk' | 'regierung' | 'schulamt' | 'fachadmin' | 'isb' | 'admin' | 'schule' | 'schulaufsicht';
+type ShellRole = 'stmuk' | 'regierung' | 'schulamt' | 'fachadmin' | 'isb' | 'admin' | 'schule' ;
 
 export type ShellContext = {
   readonly user: {

@@ -30,7 +30,7 @@ export function SelectPage({ onNavigate, shellContext }: SelectPageProps) {
   const shellRole = roleFromShell(shellContext);
   const role = showRoleSelector ? selectedRole : shellRole;
 
-  const handleRoleChange = (newRole: 'Schule' | 'Schulaufsicht') => {
+  const handleRoleChange = (newRole: 'schule' | 'schulamt') => {
     setRole(newRole);
   };
 
@@ -69,14 +69,14 @@ export function SelectPage({ onNavigate, shellContext }: SelectPageProps) {
       <div style={{ marginBottom: '2.5rem', padding: '0 0.5rem' }}>
         <nav className="role-switch" aria-label="Role selector">
           {[
-            { key: 'Schule', label: 'Schule' },
-            { key: 'Schulaufsicht', label: 'Schulaufsicht' },
+            { key: 'schule', label: 'Schule' },
+            { key: 'schulamt', label: 'Schulaufsicht' },
           ].map((option) => (
             <button
               key={option.key}
               type="button"
               className={option.key === role ? 'role-tab is-active' : 'role-tab'}
-              onClick={() => handleRoleChange(option.key as 'Schule' | 'Schulaufsicht')}
+              onClick={() => handleRoleChange(option.key as 'schule' | 'schulamt')}
             >
               {option.label}
             </button>
@@ -85,8 +85,8 @@ export function SelectPage({ onNavigate, shellContext }: SelectPageProps) {
       </div>
       )}
 
-      {/* Role Description: Schule or Schulaufsicht (role from ShellContext) */}
-      {role === 'Schule' && (
+      {/* Role Description: schule or schulamt (role from ShellContext) */}
+      {role === 'schule' && (
         <div style={formStyles.contractSection}>
           <div style={formStyles.contractPreview}>
             <p style={{ marginTop: 0, marginBottom: '1.5rem' }}>
@@ -100,7 +100,7 @@ export function SelectPage({ onNavigate, shellContext }: SelectPageProps) {
         </div>
       )}
 
-      {role === 'Schulaufsicht' && (
+      {role === 'schulamt' && (
         <div style={formStyles.contractSection}>
           <div style={formStyles.contractPreview}>
             <p style={{ marginTop: 0, marginBottom: '1.5rem' }}>
@@ -127,8 +127,8 @@ export function SelectPage({ onNavigate, shellContext }: SelectPageProps) {
             gap: '2rem',
           }}
         >
-          {/* Show School features when role is "Schule" */}
-          {role === 'Schule' && (
+          {/* Show School features when role is "schule" */}
+          {role === 'schule' && (
             <>
               {/* Schools: Previous Submission */}
               <div
@@ -214,8 +214,8 @@ export function SelectPage({ onNavigate, shellContext }: SelectPageProps) {
             </>
           )}
 
-          {/* Show Schulaufsicht features when role is "Schulaufsicht" */}
-          {role === 'Schulaufsicht' && (
+          {/* Show Schulaufsicht features when role is "schulamt" */}
+          {role === 'schulamt' && (
             <>
               {/* All Submissions Grid */}
               <div

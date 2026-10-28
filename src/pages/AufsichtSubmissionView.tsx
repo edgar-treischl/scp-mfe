@@ -123,7 +123,7 @@ export function AufsichtSubmissionView({ schulnummer, onNavigate }: AufsichtSubm
     );
   }
 
-  if (role === 'Schule' && mockSubmission.schulnummer !== schulnummer) {
+  if (role === 'schule' && mockSubmission.schulnummer !== schulnummer) {
     return (
       <div>
         <p>Diese Einreichung ist nicht verfügbar oder gehört zu einer anderen Schule.</p>

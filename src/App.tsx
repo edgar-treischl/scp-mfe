@@ -47,7 +47,7 @@ function AppContent({ shellContext }: ShellAppProps) {
       case 'all':
         return <SubmissionAll onNavigate={handleNavigate} />;
       case 'view':
-        return role === 'Schule' 
+        return role === 'schule' 
           ? <SchuleSubmissionView schulnummer={selectedSubmissionId} onNavigate={handleNavigate} />
           : <AufsichtSubmissionView schulnummer={selectedSubmissionId} onNavigate={handleNavigate} />;
       case 'about':

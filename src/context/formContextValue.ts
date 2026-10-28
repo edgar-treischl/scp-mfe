@@ -1,16 +1,16 @@
 import { createContext, useContext } from 'react';
 import type { Comment, Submission, ShellContext } from '../types';
 
-export type Role = 'Schule' | 'Schulaufsicht';
-// Maps the shell's active role to the app role; admin starts as Schule (selector available)
+export type Role = 'schule' | 'schulamt';
+// Maps the shell's active role to the app role; admin starts as schule (selector available)
 export function roleFromShell(shellContext?: ShellContext): Role {
-  if (!shellContext) return 'Schule';
+  if (!shellContext) return 'schule';
   switch (shellContext.activeRole) {
-    case 'schulaufsicht':
-      return 'Schulaufsicht';
+    case 'schulamt':
+      return 'schulamt';
     case 'schule':
     case 'admin':
-      return 'Schule';
+      return 'schule';
     default:
       throw new Error(`Unsupported shell role: ${shellContext.activeRole}`);
   }
