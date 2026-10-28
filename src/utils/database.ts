@@ -35,7 +35,7 @@ async function initDB(): Promise<Database> {
       fieldPath TEXT,
       text TEXT,
       author TEXT,
-      authorRole TEXT CHECK(authorRole IN ('Schule', 'Schulaufsicht')),
+      authorRole TEXT CHECK(authorRole IN ('schule', 'schulamt')),
       createdAt TEXT,
       resolved BOOLEAN DEFAULT 0,
       FOREIGN KEY (submissionId) REFERENCES submissions(schulnummer) ON DELETE CASCADE
@@ -181,7 +181,7 @@ export async function saveComment(comment: {
   fieldPath: string | null;
   text: string;
   author: string;
-  authorRole: 'Schule' | 'Schulaufsicht';
+  authorRole: 'schule' | 'schulamt';
   createdAt: Date;
 }): Promise<void> {
   const database = await getDB();

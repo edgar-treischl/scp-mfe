@@ -57,7 +57,7 @@ export interface Comment {
   fieldPath: string | null;
   text: string;
   author: string;
-  authorRole: 'Schule' | 'Schulaufsicht';
+  authorRole: 'schule' | 'schulamt';
   createdAt: Date;
   resolved: boolean;
 }
