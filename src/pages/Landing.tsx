@@ -52,17 +52,22 @@ export function Landing({ onNavigate, shellContext }: LandingProps) {
             </div>
           ) : (
             <div className="landing-actions">
+              <p className="landing-access-note">
+                Die App funktioniert nur für registrierte User. Bitte öffnen Sie
+                das Dash-Demo und melden Sie sich dort an.
+              </p>
               <a
                 className="landing-start landing-portal-link"
-                href="https://example.com"
-                title="Bitte melden Sie sich im Portal an."
+                href="https://edgar-treischl.pages.gitlab.lrz.de/dash-demo/"
+                title="Öffnet das Portal in einem neuen Tab (externer Link)"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                Zugang zur App <span aria-hidden="true">→</span>
+                Zur Dash-Demo
+                <svg className="landing-external-icon" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3" />
+                </svg>
               </a>
-              <p className="landing-access-note">
-                Die App kann hier nicht gestartet werden. Bitte öffnen Sie
-                das Portal und melden Sie sich dort an.
-              </p>
             </div>
           )}
         </div>
