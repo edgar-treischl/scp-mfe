@@ -68,57 +68,47 @@ export function Landing({ onNavigate, shellContext }: LandingProps) {
         />
       </div>
 
-      <section aria-labelledby="shell-context-heading" style={formStyles.contractSection}>
-        <h2 id="shell-context-heading">Shell-Kontext (Test)</h2>
-        {shellContext ? (
-          <>
-            <p>Nur zur Anzeige. Die lokale Rollen-Auswahl ändert diese Werte nicht.</p>
-            <pre style={{ overflowX: 'auto' }}>
-              {JSON.stringify({
-                activeRole: shellContext.activeRole,
-                roles: shellContext.user.roles,
-                regbez: shellContext.user.regbez,
-                samt: shellContext.user.samt,
-              }, null, 2)}
-            </pre>
-          </>
-        ) : (
-          <p>Kein Shell-Kontext empfangen. Zum Testen die App in der Dash-Shell öffnen.</p>
-        )}
-      </section>
+      {/* Role Navigation - Only show if not admin role or using local test mode */}
+      {(() => {
+        const isAdmin = shellContext?.activeRole === 'admin';
+        const useLocalTestRole = import.meta.env.VITE_USE_LOCAL_ROLE_SELECTOR === 'true';
+        const forceHide = import.meta.env.VITE_FORCE_HIDE_ROLE_SELECTOR === 'true';
+        const shouldShowRoleSelector = !forceHide && (useLocalTestRole || !isAdmin);
 
-      {/* Role Navigation */}
-      <div style={{ marginBottom: '2.5rem', padding: '0 0.5rem' }}>
-        <label
-          style={{
-            display: 'block',
-            fontSize: '0.9rem',
-            fontWeight: '600',
-            color: '#333',
-            marginBottom: '0.85rem',
-            textTransform: 'uppercase',
-            letterSpacing: '0.05em',
-            opacity: 0.8,
-          }}
-        >
-          Auswahl der Rolle:
-        </label>
-        <nav className="role-switch" aria-label="Role selector">
-          {[
-            { key: 'Schule', label: 'Schule' },
-            { key: 'Schulaufsicht', label: 'Schulaufsicht' },
-          ].map((option) => (
-            <button
-              key={option.key}
-              type="button"
-              className={option.key === role ? 'role-tab is-active' : 'role-tab'}
-              onClick={() => setRole(option.key as 'Schule' | 'Schulaufsicht')}
+        return shouldShowRoleSelector ? (
+          <div style={{ marginBottom: '2.5rem', padding: '0 0.5rem' }}>
+            <label
+              style={{
+                display: 'block',
+                fontSize: '0.9rem',
+                fontWeight: '600',
+                color: '#333',
+                marginBottom: '0.85rem',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                opacity: 0.8,
+              }}
             >
-              {option.label}
-            </button>
-          ))}
-        </nav>
-      </div>
+              Auswahl der Rolle:
+            </label>
+            <nav className="role-switch" aria-label="Role selector">
+              {[
+                { key: 'Schule', label: 'Schule' },
+                { key: 'Schulaufsicht', label: 'Schulaufsicht' },
+              ].map((option) => (
+                <button
+                  key={option.key}
+                  type="button"
+                  className={option.key === role ? 'role-tab is-active' : 'role-tab'}
+                  onClick={() => setRole(option.key as 'Schule' | 'Schulaufsicht')}
+                >
+                  {option.label}
+                </button>
+              ))}
+            </nav>
+          </div>
+        ) : null;
+      })()}
 
       {/* Header */}
       <div style={{ marginBottom: '1rem' }}>
