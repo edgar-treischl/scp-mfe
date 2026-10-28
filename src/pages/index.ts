@@ -1,4 +1,5 @@
 export { Landing } from './Landing';
+export { SelectPage } from './SelectPage';
 export { FormEditor } from './FormEditor';
 export { FormEval } from './FormEval';
 export { SchuleHistory as SubmissionHistory } from './SchuleHistory';

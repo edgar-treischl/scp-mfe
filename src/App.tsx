@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Landing, FormEditor, FormEval, SubmissionHistory, SchuleSubmissionView, AufsichtSubmissionView, SubmissionNew, SubmissionAll, About, Data } from './pages';
+import { Landing, SelectPage, FormEditor, FormEval, SubmissionHistory, SchuleSubmissionView, AufsichtSubmissionView, SubmissionNew, SubmissionAll, About, Data } from './pages';
 import { Footer } from './components';
 import { FormContextProvider } from './context/FormContext';
 import { useFormContext } from './context/formContextValue';
@@ -7,12 +7,12 @@ import type { ShellAppProps } from './types';
 import './components/formInputStyles.css';
 import './App.css';
 
-type View = 'landing' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'all' | 'data';
+type View = 'landing' | 'select' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'all' | 'data';
 
 function getInitialView(): View {
   const hash = window.location.hash.slice(1);
   const route = hash.split('/')[1];
-  if (['form', 'history', 'view', 'about', 'eval', 'new', 'all', 'data'].includes(route)) {
+  if (['select', 'form', 'history', 'view', 'about', 'eval', 'new', 'all', 'data'].includes(route)) {
     return route as View;
   }
   return 'landing';
@@ -34,6 +34,8 @@ function AppContent({ shellContext }: ShellAppProps) {
     switch (currentView) {
       case 'landing':
         return <Landing onNavigate={handleNavigate} shellContext={shellContext} />;
+      case 'select':
+        return <SelectPage onNavigate={handleNavigate} shellContext={shellContext} />;
       case 'form':
         return <FormEditor key={selectedSubmissionId ?? 'new'} onNavigate={handleNavigate} submissionId={selectedSubmissionId || undefined} />;
       case 'eval':
