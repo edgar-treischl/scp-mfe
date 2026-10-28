@@ -1,4 +1,4 @@
-import { useFormContext } from '../context/formContextValue';
+import { useFormContext, roleFromShell } from '../context/formContextValue';
 import { AddIcon, ManageIcon } from '../assets/icons';
 import { formStyles } from '../components/formStyles';
 import { Breadcrumb } from '../components';
@@ -18,8 +18,17 @@ interface SelectPageProps extends ShellAppProps {
   onNavigate: (view: 'landing' | 'select' | 'form' | 'history' | 'view' | 'new' | 'all') => void;
 }
 
-export function SelectPage({ onNavigate }: SelectPageProps) {
-  const { role, setRole } = useFormContext();
+export function SelectPage({ onNavigate, shellContext }: SelectPageProps) {
+  const { role: selectedRole, setRole } = useFormContext();
+
+  // Selector only for admins or local testing; the env flag can force-hide it
+  const forceHide = import.meta.env.VITE_FORCE_HIDE_ROLE_SELECTOR === 'true';
+  const useLocal = import.meta.env.VITE_USE_LOCAL_ROLE_SELECTOR === 'true';
+  const showRoleSelector = !forceHide && (useLocal || shellContext?.activeRole === 'admin');
+
+  // Without the selector, the role comes only from the ShellContext
+  const shellRole = roleFromShell(shellContext);
+  const role = showRoleSelector ? selectedRole : shellRole;
 
   const handleRoleChange = (newRole: 'Schule' | 'Schulaufsicht') => {
     setRole(newRole);
@@ -55,7 +64,8 @@ export function SelectPage({ onNavigate }: SelectPageProps) {
         </h1>
       </div>
 
-      {/* Role Navigation Section */}
+      {/* Role Navigation Section: only for local testing / admins */}
+      {showRoleSelector && (
       <div style={{ marginBottom: '2.5rem', padding: '0 0.5rem' }}>
         <nav className="role-switch" aria-label="Role selector">
           {[
@@ -73,8 +83,9 @@ export function SelectPage({ onNavigate }: SelectPageProps) {
           ))}
         </nav>
       </div>
+      )}
 
-      {/* Role Description */}
+      {/* Role Description: Schule or Schulaufsicht (role from ShellContext) */}
       {role === 'Schule' && (
         <div style={formStyles.contractSection}>
           <div style={formStyles.contractPreview}>

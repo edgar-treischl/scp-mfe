@@ -71,7 +71,7 @@ function AppContent({ shellContext }: ShellAppProps) {
 
 function App({ shellContext }: ShellAppProps) {
   return (
-    <FormContextProvider>
+    <FormContextProvider shellContext={shellContext}>
       <AppContent shellContext={shellContext} />
     </FormContextProvider>
   );

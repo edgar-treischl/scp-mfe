@@ -1,10 +1,23 @@
 import { useCallback, useState, useEffect, type ReactNode } from 'react';
 import { getCommentsForSubmission, getSubmission, saveComment, saveSubmission, initializeWithMockData } from '../utils/database';
-import { FormContext, type FieldMode, type Role, type SubmissionStatus } from './formContextValue';
-import type { Comment, Submission } from '../types';
+import { FormContext, roleFromShell, type FieldMode, type Role, type SubmissionStatus } from './formContextValue';
+import type { Comment, Submission, ShellContext } from '../types';
 
-export function FormContextProvider({ children }: { children: ReactNode }) {
-  const [role, setRole] = useState<Role>('Schule');
+export function FormContextProvider({
+  children,
+  shellContext,
+}: {
+  children: ReactNode;
+  shellContext?: ShellContext;
+}) {
+  const activeRole = shellContext?.activeRole;
+  const [role, setRole] = useState<Role>(() => roleFromShell(shellContext));
+
+  // Keep the role in sync with the shell's active role
+  useEffect(() => {
+    setRole(roleFromShell(shellContext));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeRole]);
   const [submission, setSubmission] = useState<Submission | null>(null);
   const [comments, setComments] = useState<Record<string, Comment>>({});
   const [isLoading, setIsLoading] = useState(false);
