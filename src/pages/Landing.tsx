@@ -2,6 +2,7 @@ import { useFormContext } from '../context/formContextValue';
 
 import { AddIcon, ManageIcon } from '../assets/icons';
 import { formStyles } from '../components/formStyles';
+import type { ShellAppProps } from '../types';
 
 // Mock data: new submissions for Schulaufsicht
 const MOCK_NEW_SUBMISSIONS = [
@@ -15,11 +16,11 @@ const contractSchoolName = 'Max Mustermann Grundschule';
 const contractSamt = 'Staatl. Schulamt XXX';
 
 
-interface LandingProps {
+interface LandingProps extends ShellAppProps {
   onNavigate: (view: 'landing' | 'form' | 'history' | 'view' | 'new' | 'all') => void;
 }
 
-export function Landing({ onNavigate }: LandingProps) {
+export function Landing({ onNavigate, shellContext }: LandingProps) {
   const { role, setRole } = useFormContext();
 
   const logoLeft = new URL('../utils/assets/startchancen.png', import.meta.url).href;
@@ -66,6 +67,25 @@ export function Landing({ onNavigate }: LandingProps) {
           }}
         />
       </div>
+
+      <section aria-labelledby="shell-context-heading" style={formStyles.contractSection}>
+        <h2 id="shell-context-heading">Shell-Kontext (Test)</h2>
+        {shellContext ? (
+          <>
+            <p>Nur zur Anzeige. Die lokale Rollen-Auswahl ändert diese Werte nicht.</p>
+            <pre style={{ overflowX: 'auto' }}>
+              {JSON.stringify({
+                activeRole: shellContext.activeRole,
+                roles: shellContext.user.roles,
+                regbez: shellContext.user.regbez,
+                samt: shellContext.user.samt,
+              }, null, 2)}
+            </pre>
+          </>
+        ) : (
+          <p>Kein Shell-Kontext empfangen. Zum Testen die App in der Dash-Shell öffnen.</p>
+        )}
+      </section>
 
       {/* Role Navigation */}
       <div style={{ marginBottom: '2.5rem', padding: '0 0.5rem' }}>

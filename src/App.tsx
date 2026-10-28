@@ -3,6 +3,7 @@ import { Landing, FormEditor, FormEval, SubmissionHistory, SchuleSubmissionView,
 import { Footer } from './components';
 import { FormContextProvider } from './context/FormContext';
 import { useFormContext } from './context/formContextValue';
+import type { ShellAppProps } from './types';
 import './components/formInputStyles.css';
 import './App.css';
 
@@ -17,7 +18,7 @@ function getInitialView(): View {
   return 'landing';
 }
 
-function AppContent() {
+function AppContent({ shellContext }: ShellAppProps) {
   const [currentView, setCurrentView] = useState<View>(getInitialView());
   const [selectedSubmissionId, setSelectedSubmissionId] = useState<string | null>(null);
   const { role } = useFormContext();
@@ -32,7 +33,7 @@ function AppContent() {
   const renderView = () => {
     switch (currentView) {
       case 'landing':
-        return <Landing onNavigate={handleNavigate} />;
+        return <Landing onNavigate={handleNavigate} shellContext={shellContext} />;
       case 'form':
         return <FormEditor key={selectedSubmissionId ?? 'new'} onNavigate={handleNavigate} submissionId={selectedSubmissionId || undefined} />;
       case 'eval':
@@ -52,7 +53,7 @@ function AppContent() {
       case 'data':
         return <Data onNavigate={handleNavigate} />;
       default:
-        return <Landing onNavigate={handleNavigate} />;
+        return <Landing onNavigate={handleNavigate} shellContext={shellContext} />;
     }
   };
 
@@ -66,10 +67,10 @@ function AppContent() {
   );
 }
 
-function App() {
+function App({ shellContext }: ShellAppProps) {
   return (
     <FormContextProvider>
-      <AppContent />
+      <AppContent shellContext={shellContext} />
     </FormContextProvider>
   );
 }
