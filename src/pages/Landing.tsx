@@ -34,12 +34,12 @@ export function Landing({ onNavigate, shellContext }: LandingProps) {
         <div className="landing-intro">
           <span className="landing-eyebrow">Prototyp</span>
           <h1 id="landing-title">
-            Ziel- und Handlungsvereinbarung<br />
-            <span>App</span>
+            Ziel- und Handlungsvereinbarungs<br />
+            <span><i>App</i> </span>
           </h1>
           <div className="landing-note">
             <span className="landing-note-icon" aria-hidden="true">✓</span>
-            <span>Einfach. Übersichtlich. Digital.</span>
+            <span>Digital. Übersichtlich. Einfach.</span>
           </div>
           {showStart ? (
             <div className="landing-actions">
@@ -53,8 +53,8 @@ export function Landing({ onNavigate, shellContext }: LandingProps) {
           ) : (
             <div className="landing-actions">
               <p className="landing-access-note">
-                Die App funktioniert nur für registrierte User. Bitte öffnen Sie
-                das Dash-Demo und melden Sie sich dort an.
+                Die App funktioniert nur für registrierte User. Bitte registrieren Sie sich
+                auf der Dash-Demo Plattform, um Einblicke in die App Entwicklung zu bekommen.
               </p>
               <a
                 className="landing-start landing-portal-link"
@@ -84,8 +84,8 @@ export function Landing({ onNavigate, shellContext }: LandingProps) {
               <span className="landing-benefit-number">01 / DIGITALISIERUNG</span>
               <h2>Vereinbarungen digital erstellen</h2>
               <p>
-                Ziel- und Handlungsvereinbarungen digital erstellen, bearbeiten
-                und zentral verfügbar managen.
+                Ziel- und Handlungsvereinbarungen digital erstellen, überarbeiten
+                und direkt einreichen.
               </p>
             </div>
           </div>
@@ -99,10 +99,9 @@ export function Landing({ onNavigate, shellContext }: LandingProps) {
             </div>
             <div className="landing-benefit-copy">
               <span className="landing-benefit-number">02 / ZUSAMMENARBEIT</span>
-              <h2>Im Austausch mit der Schulaufsicht</h2>
+              <h2>Zusammenarbeit mit der Schulaufsicht</h2>
               <p>
-                Mehr als ein digitales Formular: Vereinbarungen gemeinsam
-                begleiten, Rückmeldungen austauschen und nächste Schritte abstimmen.
+                Mehr als ein digitales Formular: Vereinbarungen einreichen um Rückmeldungen zu erhalten, sich auszutauschen und nächste Schritte planen.
               </p>
             </div>
           </div>
@@ -120,7 +119,7 @@ export function Landing({ onNavigate, shellContext }: LandingProps) {
               <span className="landing-benefit-number">03 / VERNETZUNG</span>
               <h2>Mit anderen Schulen vernetzen</h2>
               <p>
-                Schulen mit gleichen Zielen vernetzen – für neue Perspektiven
+                Schulen mit gleichen Zielen entdecken und sich vernetzen – für neue Perspektiven
                 und gemeinsame Weiterentwicklung.
               </p>
             </div>
