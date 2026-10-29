@@ -4,7 +4,7 @@ import '../components/formInputStyles.css';
 import type { Submission } from '../types';
 
 interface AufsichtAllProps {
-  onNavigate: (view: 'landing' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'all', submissionId?: string) => void;
+  onNavigate: (view: 'landing' | 'select' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'all', submissionId?: string) => void;
 }
 
 interface FilterState {
@@ -224,6 +224,7 @@ export function AufsichtAll({ onNavigate }: AufsichtAllProps) {
       <Breadcrumb 
         items={[
           { label: 'Start', onClick: () => onNavigate('landing') },
+          { label: 'Aufgabe', onClick: () => onNavigate('select') },
           { label: 'Alle Einreichungen' }
         ]}
       />

@@ -4,7 +4,7 @@ import { saveSubmission } from '../utils/database';
 import type { Submission } from '../types';
 
 interface AufsichtNewProps {
-  onNavigate: (view: 'landing' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'all', submissionId?: string) => void;
+  onNavigate: (view: 'landing' | 'select' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'all', submissionId?: string) => void;
 }
 
 // Self-contained mock data: Multiple schools with draft submissions only
@@ -177,6 +177,7 @@ export function AufsichtNew({ onNavigate }: AufsichtNewProps) {
       <Breadcrumb 
         items={[
           { label: 'Start', onClick: () => onNavigate('landing') },
+          { label: 'Aufgabe', onClick: () => onNavigate('select') },
           { label: 'Neue Einreichungen' }
         ]}
       />

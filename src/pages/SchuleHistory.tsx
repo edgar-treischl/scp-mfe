@@ -2,7 +2,7 @@ import { Breadcrumb, SubmissionTable } from '../components';
 import type { Submission } from '../types';
 
 interface SchuleHistoryProps {
-  onNavigate: (view: 'landing' | 'form' | 'history' | 'view' | 'about' | 'eval', submissionId?: string) => void;
+  onNavigate: (view: 'landing' | 'select' | 'form' | 'history' | 'view' | 'about' | 'eval', submissionId?: string) => void;
 }
 
 // Self-contained mock data: Only school 0001's submissions
@@ -113,6 +113,7 @@ export function SchuleHistory({ onNavigate }: SchuleHistoryProps) {
       <Breadcrumb 
         items={[
           { label: 'Start', onClick: () => onNavigate('landing') },
+          { label: 'Aufgabe', onClick: () => onNavigate('select') },
           { label: 'Zielvereinbarungen' }
         ]}
       />

@@ -1,7 +1,7 @@
 import { Breadcrumb } from "../components";
 
 interface DataProps {
-  onNavigate: (view: "landing" | "form" | "history" | "view" | "about" | "data") => void;
+  onNavigate: (view: "landing" | "select" | "form" | "history" | "view" | "about" | "data") => void;
 }
 
 export function Data({ onNavigate }: DataProps) {
@@ -16,6 +16,7 @@ export function Data({ onNavigate }: DataProps) {
       <Breadcrumb
         items={[
           { label: "Start", onClick: () => onNavigate("landing") },
+          { label: "Aufgabe", onClick: () => onNavigate("select") },
           { label: "Datenschutz" },
         ]}
       />

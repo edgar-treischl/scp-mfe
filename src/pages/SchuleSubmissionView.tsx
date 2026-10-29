@@ -6,7 +6,7 @@ import { exportSubmissionAsDOCX } from '../utils/docxExport';
 
 interface SchuleSubmissionViewProps {
   schulnummer: string | null;
-  onNavigate: (view: 'landing' | 'form' | 'history' | 'view' | 'about', schulnummer?: string) => void;
+  onNavigate: (view: 'landing' | 'select' | 'form' | 'history' | 'view' | 'about', schulnummer?: string) => void;
 }
 
 const mockSubmission: Submission = {
@@ -119,6 +119,7 @@ export function SchuleSubmissionView({ onNavigate }: SchuleSubmissionViewProps) 
       <Breadcrumb 
         items={[
           { label: 'Start', onClick: () => onNavigate('landing') },
+          { label: 'Aufgabe', onClick: () => onNavigate('select') },
           { label: 'Zielvereinbarungen', onClick: () => onNavigate('history') },
           { label: mockSubmission.schulnummer }
         ]}

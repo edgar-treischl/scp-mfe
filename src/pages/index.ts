@@ -3,6 +3,7 @@ export { SelectPage } from './SelectPage';
 export { FormEditor } from './FormEditor';
 export { FormEval } from './FormEval';
 export { SchuleHistory as SubmissionHistory } from './SchuleHistory';
+export { SchuleNew } from './SchuleNew';
 export { AufsichtNew as SubmissionNew } from './AufsichtNew';
 export { AufsichtAll as SubmissionAll } from './AufsichtAll';
 export { SchuleSubmissionView } from './SchuleSubmissionView';

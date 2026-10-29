@@ -15,7 +15,7 @@ const contractSchoolName = 'Max Mustermann Grundschule';
 const contractSamt = 'Staatl. Schulamt XXX';
 
 interface SelectPageProps extends ShellAppProps {
-  onNavigate: (view: 'landing' | 'select' | 'form' | 'history' | 'view' | 'new' | 'all') => void;
+  onNavigate: (view: 'landing' | 'select' | 'form' | 'history' | 'view' | 'new' | 'new-create' | 'new-load' | 'all') => void;
 }
 
 export function SelectPage({ onNavigate, shellContext }: SelectPageProps) {
@@ -173,7 +173,7 @@ export function SelectPage({ onNavigate, shellContext }: SelectPageProps) {
 
               {/* Schools: Start New Form */}
               <div
-                onClick={() => onNavigate('form')}
+                onClick={() => onNavigate('new')}
                 style={{
                   padding: '2rem',
                   background: 'white',

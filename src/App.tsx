@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Landing, SelectPage, FormEditor, FormEval, SubmissionHistory, SchuleSubmissionView, AufsichtSubmissionView, SubmissionNew, SubmissionAll, About, Data } from './pages';
+import { Landing, SelectPage, FormEditor, FormEval, SubmissionHistory, SchuleSubmissionView, AufsichtSubmissionView, SubmissionNew, SubmissionAll, About, Data, SchuleNew } from './pages';
 import { Footer } from './components';
 import { FormContextProvider } from './context/FormContext';
 import { useFormContext } from './context/formContextValue';
@@ -7,12 +7,12 @@ import type { ShellAppProps } from './types';
 import './components/formInputStyles.css';
 import './App.css';
 
-type View = 'landing' | 'select' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'all' | 'data';
+type View = 'landing' | 'select' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'new-create' | 'new-load' | 'all' | 'data';
 
 function getInitialView(): View {
   const hash = window.location.hash.slice(1);
   const route = hash.split('/')[1];
-  if (['select', 'form', 'history', 'view', 'about', 'eval', 'new', 'all', 'data'].includes(route)) {
+  if (['select', 'form', 'history', 'view', 'about', 'eval', 'new', 'new-create', 'new-load', 'all', 'data'].includes(route)) {
     return route as View;
   }
   return 'landing';
@@ -43,7 +43,14 @@ function AppContent({ shellContext }: ShellAppProps) {
       case 'history':
         return <SubmissionHistory onNavigate={handleNavigate} />;
       case 'new':
-        return <SubmissionNew onNavigate={handleNavigate} />;
+        // For Schule (school), show the new selection page. For Aufsicht (supervision), show the submission list
+        return role === 'schule'
+          ? <SchuleNew onNavigate={handleNavigate} />
+          : <SubmissionNew onNavigate={handleNavigate} />;
+      case 'new-create':
+        return <FormEditor key="new-create" onNavigate={handleNavigate} submissionId={undefined} parentView="new" showLoadDraft={false} />;
+      case 'new-load':
+        return <FormEditor key="new-load" onNavigate={handleNavigate} submissionId={undefined} parentView="new" showLoadDraft={true} />;
       case 'all':
         return <SubmissionAll onNavigate={handleNavigate} />;
       case 'view':

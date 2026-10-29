@@ -6,7 +6,7 @@ import { useFormContext } from '../context/formContextValue';
 
 interface FormEvalProps {
   submissionId?: string;
-  onNavigate: (view: 'landing' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'all', submissionId?: string) => void;
+  onNavigate: (view: 'landing' | 'select' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'all', submissionId?: string) => void;
 }
 
 export function FormEval({ submissionId, onNavigate }: FormEvalProps) {
@@ -109,7 +109,8 @@ export function FormEval({ submissionId, onNavigate }: FormEvalProps) {
   };
 
   const breadcrumbItems = [
-    { label: 'Home', onClick: () => onNavigate('landing') },
+    { label: 'Start', onClick: () => onNavigate('landing') },
+    { label: 'Aufgabe', onClick: () => onNavigate('select') },
     { label: 'Alle Einreichungen', onClick: () => onNavigate('all') },
     ...(submissionId ? [{ label: submissionId, onClick: () => onNavigate('view', submissionId) }] : []),
     { label: 'Bewertung schreiben' },

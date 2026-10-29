@@ -7,7 +7,7 @@ import { useFormContext } from '../context/formContextValue';
 
 interface AufsichtSubmissionViewProps {
   schulnummer: string | null;
-  onNavigate: (view: 'landing' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'all', schulnummer?: string) => void;
+  onNavigate: (view: 'landing' | 'select' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'all', schulnummer?: string) => void;
 }
 
 const mockSubmission: Submission = {
@@ -140,6 +140,7 @@ export function AufsichtSubmissionView({ schulnummer, onNavigate }: AufsichtSubm
       <Breadcrumb 
         items={[
           { label: 'Start', onClick: () => onNavigate('landing') },
+          { label: 'Aufgabe', onClick: () => onNavigate('select') },
           { label: 'Alle Einreichungen', onClick: () => onNavigate('all') },
           { label: schulnummer || 'Einreichung', onClick: () => schulnummer && onNavigate('view', schulnummer) }
         ]}

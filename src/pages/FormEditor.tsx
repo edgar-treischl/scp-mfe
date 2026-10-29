@@ -13,8 +13,10 @@ import { FORM_GOAL_OPTIONS } from '../utils/formConstants';
 import type { Submission } from '../types';
 
 interface FormEditorProps {
-  onNavigate: (view: 'landing' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'all' | 'data', submissionId?: string) => void;
+  onNavigate: (view: 'landing' | 'select' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'new-create' | 'new-load' | 'all' | 'data', submissionId?: string) => void;
   submissionId?: string;
+  parentView?: 'new';
+  showLoadDraft?: boolean;
 }
 
 interface QuestionModule {
@@ -476,24 +478,43 @@ interface FormData {
   dataSources: string[];
 }
 
-export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
+function getInitialFormData(data?: Submission['data']): FormData {
+  return {
+    istStandAnalyse: (data?.istStandAnalyse as string) || '',
+    supportPersonnel: (data?.supportPersonnel as boolean) ?? '',
+    supportTypes: (data?.supportTypes as string[]) || [],
+    supportOtherText: (data?.supportOtherText as string) || '',
+    dataSources: (data?.dataSources as string[]) || [],
+  };
+}
+
+function getInitialGoals(data?: Submission['data']): GoalEntry[] {
+  const questions = (data?.questionModules as QuestionModule[]) || [];
+  const measures = (data?.measureModules as MeasureModule[]) || [];
+  return [{
+    selectedGoal: (data?.selectedGoal as string) || '',
+    questionModules: questions.length > 0 ? questions : [createEmptyQuestionModule()],
+    measureModules: measures.length > 0 ? measures : [createEmptyMeasureModule()],
+  }];
+}
+
+export function FormEditor({ onNavigate, submissionId, parentView, showLoadDraft }: FormEditorProps) {
   const { getFieldMode, submission, setSubmission, loadSubmission, role } = useFormContext();
   const fieldMode = getFieldMode();
   const canEditForm = fieldMode === 'edit';
-  // Skip landing step if editing an existing submission
-  const [currentStep, setCurrentStep] = useState(submissionId ? 1 : 0);
-  const [formData, setFormData] = useState<FormData>({
-    istStandAnalyse: '',
-    supportPersonnel: '',
-    supportTypes: [],
-    supportOtherText: '',
-    dataSources: [],
-  });
+  const initialDraft = !submissionId && showLoadDraft ? mockDraft : null;
+  const [currentStep, setCurrentStep] = useState(submissionId || (parentView === 'new' && showLoadDraft !== undefined) ? 1 : 0);
+  const [formData, setFormData] = useState<FormData>(() => getInitialFormData(initialDraft?.data));
 
   // Initialize submission on mount or when submissionId changes
   useEffect(() => {
     if (submissionId) {
       void loadSubmission(submissionId);
+      return;
+    }
+
+    if (initialDraft) {
+      setSubmission(initialDraft);
       return;
     }
 
@@ -518,45 +539,12 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
       updatedAt: new Date(),
       data: defaultFormData,
     });
-  }, [submissionId, loadSubmission, setSubmission]);
+  }, [submissionId, initialDraft, loadSubmission, setSubmission]);
   
   // Multi-goal support
-  const [goals, setGoals] = useState<GoalEntry[]>([
-    {
-      selectedGoal: '',
-      questionModules: [
-        {
-          id: crypto.randomUUID(),
-          smartGoal: '',
-          targetGroup: [],
-          targetGroupOther: '',
-          subject: [],
-          subjectOther: '',
-          dataSources: [],
-          dataSourcesOther: '',
-          startDate: '',
-          endDate: '',
-          comments: '',
-        }
-      ],
-      measureModules: [
-        {
-          id: crypto.randomUUID(),
-          description: '',
-          type: '',
-          responsible: '',
-          involved: [],
-          resources: [],
-          resourcesDescription: '',
-          workMethod: [],
-          workMethodDescription: '',
-          deadline: '',
-        }
-      ],
-    }
-  ]);
+  const [goals, setGoals] = useState<GoalEntry[]>(() => getInitialGoals(initialDraft?.data));
   const [currentGoalIndex, setCurrentGoalIndex] = useState(0);
-  const [currentDraftId, setCurrentDraftId] = useState<string | undefined>(submissionId);
+  const [currentDraftId, setCurrentDraftId] = useState<string | undefined>(submissionId ?? initialDraft?.schulnummer);
   const [contractConfirmed, setContractConfirmed] = useState(false);
   const [dataAccuracyConfirmed, setDataAccuracyConfirmed] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -621,6 +609,10 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
   const currentStepData = steps[currentStep];
 
   const handleStartNew = () => {
+    if (parentView === 'new') {
+      onNavigate('new-create');
+      return;
+    }
     setCurrentDraftId(undefined);
     handleNextStep();
   };
@@ -633,6 +625,10 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
   };
 
   const handlePreviousStep = () => {
+    if (currentStep === 1 && parentView === 'new') {
+      onNavigate('new');
+      return;
+    }
     if (currentStep > 0) {
       // Reset confirmation checkboxes when leaving Step 5
       if (currentStep === 5) {
@@ -762,53 +758,13 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
   };
 
   const loadDraft = () => {
+    if (parentView === 'new') {
+      onNavigate('new-load');
+      return;
+    }
     if (mockDraft) {
-      // Load all draft data into form
-      setFormData({
-        istStandAnalyse: (mockDraft.data.istStandAnalyse as string) || '',
-        supportPersonnel: (mockDraft.data.supportPersonnel as boolean) || false,
-        supportTypes: (mockDraft.data.supportTypes as string[]) || [],
-        supportOtherText: (mockDraft.data.supportOtherText as string) || '',
-        dataSources: (mockDraft.data.dataSources as string[]) || [],
-      });
-      
-      // Load goals data
-      const draftGoals = (mockDraft.data.questionModules as QuestionModule[]) || [];
-      const draftMeasures = (mockDraft.data.measureModules as MeasureModule[]) || [];
-      const draftGoal = (mockDraft.data.selectedGoal as string) || '';
-      
-      setGoals([{
-        selectedGoal: draftGoal,
-        questionModules: draftGoals.length > 0 ? draftGoals : [
-          {
-            id: crypto.randomUUID(),
-            smartGoal: '',
-            targetGroup: [],
-            targetGroupOther: '',
-            subject: [],
-            subjectOther: '',
-            dataSources: [],
-            dataSourcesOther: '',
-            startDate: '',
-            endDate: '',
-            comments: '',
-          }
-        ],
-        measureModules: draftMeasures.length > 0 ? draftMeasures : [
-          {
-            id: crypto.randomUUID(),
-            description: '',
-            type: '',
-            responsible: '',
-            involved: [],
-            resources: [],
-            resourcesDescription: '',
-            workMethod: [],
-            workMethodDescription: '',
-            deadline: '',
-          }
-        ],
-      }]);
+      setFormData(getInitialFormData(mockDraft.data));
+      setGoals(getInitialGoals(mockDraft.data));
       setCurrentGoalIndex(0);
       setCurrentDraftId(mockDraft.schulnummer);
       // Move to iststand step (step 1) after loading draft
@@ -832,7 +788,27 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
     if (fieldMode === 'review') {
       return [
         { label: 'Start', onClick: () => onNavigate('landing') },
+        { label: 'Aufgabe', onClick: () => onNavigate('select') },
         { label: 'Neue Einreichungen', onClick: () => onNavigate('new') },
+      ];
+    }
+
+    // When coming from the "Neu" (new) page, show sub-breadcrumb
+    if (parentView === 'new') {
+      if (currentStep === 0) {
+        return [
+          { label: 'Start', onClick: () => onNavigate('landing') },
+          { label: 'Aufgabe', onClick: () => onNavigate('select') },
+          { label: 'Neu' }
+        ];
+      }
+      const subLabel = showLoadDraft ? 'Entwurf laden' : 'Neue Einreichung';
+      return [
+        { label: 'Start', onClick: () => onNavigate('landing') },
+        { label: 'Aufgabe', onClick: () => onNavigate('select') },
+        { label: 'Neu', onClick: () => onNavigate('new') },
+        { label: subLabel },
+        { label: 'Form' }
       ];
     }
 
@@ -840,12 +816,14 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
       // Editing existing submission
       return [
         { label: 'Start', onClick: () => onNavigate('landing') },
+        { label: 'Aufgabe', onClick: () => onNavigate('select') },
         { label: 'Neu' }
       ];
     } else {
       // New form
       return [
         { label: 'Start', onClick: () => onNavigate('landing') },
+        { label: 'Aufgabe', onClick: () => onNavigate('select') },
         { label: 'Neu' }
       ];
     }
@@ -933,7 +911,7 @@ export function FormEditor({ onNavigate, submissionId }: FormEditorProps) {
                     fontWeight: '600',
                   }}
                 >
-                  Neue Zielvereinbarung
+                  Neue Einreichung
                 </h2>
 
                 <p
