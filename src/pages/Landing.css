@@ -282,26 +282,3 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .landing-benefits {
-    --landing-text: #f3f4f6;
-    --landing-muted: #9ca3af;
-    --landing-border: #4b5563;
-
-    background: #1f2937;
-  }
-
-  .landing-benefits-visual::before {
-    background: #263747;
-  }
-
-  .landing-icon-lightblue {
-    background: #304b60;
-    color: #b8e1ff;
-  }
-
-  .landing-note-icon {
-    color: #9ce8dc;
-    background: #254943;
-  }
-}
