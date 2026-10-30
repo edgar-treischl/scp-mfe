@@ -430,6 +430,7 @@ export function FormEditor({ onNavigate, submissionId, parentView, showLoadDraft
     hydratedIdRef.current = submissionId;
 
     const data = submission.data;
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFormData({
       istStandAnalyse: (data.istStandAnalyse as string) || '',
       supportPersonnel: (data.supportPersonnel as boolean) ?? '',
