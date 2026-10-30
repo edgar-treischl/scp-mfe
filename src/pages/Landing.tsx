@@ -59,7 +59,7 @@ export function Landing({ onNavigate, shellContext }: LandingProps) {
               <a
                 className="landing-start landing-portal-link"
                 href="https://edgar-treischl.pages.gitlab.lrz.de/dash-demo/"
-                title="Öffnet das Portal in einem neuen Tab (externer Link)"
+                title="Öffnet die Dash Demo in einem neuen Tab"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -101,7 +101,7 @@ export function Landing({ onNavigate, shellContext }: LandingProps) {
               <span className="landing-benefit-number">02 / ZUSAMMENARBEIT</span>
               <h2>Zusammenarbeit mit der Schulaufsicht</h2>
               <p>
-                Mehr als ein digitales Formular: Vereinbarungen einreichen um Rückmeldungen zu erhalten, sich auszutauschen und nächste Schritte planen.
+                Mehr als ein digitales Formular: Vereinbarungen einreichen um Rückmeldungen zu erhalten, sich auszutauschen und um nächste Schritte zu planen.
               </p>
             </div>
           </div>

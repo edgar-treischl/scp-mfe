@@ -54,9 +54,9 @@ export function About({ onNavigate }: AboutProps) {
           </p>
           <ul style={{ marginLeft: "1.5rem" }}>
             <li>Zielvereinbarungsformular</li>
-            <li>Modulare Tabelle</li>
             <li>Bearbeiten gespeicherter Zielvereinbarungen</li>
             <li>Exportfunktionen (PDF/Word)</li>
+            <li>...</li>
           </ul>
         </section>
 
