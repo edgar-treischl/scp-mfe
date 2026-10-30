@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Landing, SelectPage, FormEditor, FormEval, SubmissionHistory, SchuleSubmissionView, AufsichtSubmissionView, SubmissionNew, SubmissionAll, About, Data, SchuleNew } from './pages';
+import { Landing, SelectPage, FormEditor, FormEval, SchuleHistory, AufsichtAll, SchuleSubmissionView, AufsichtSubmissionView, AufsichtNew, About, Data, SchuleNew } from './pages';
 import { Footer } from './components';
 import { FormContextProvider } from './context/FormContext';
 import { useFormContext } from './context/formContextValue';
@@ -41,18 +41,18 @@ function AppContent({ shellContext }: ShellAppProps) {
       case 'eval':
         return <FormEval key={selectedSubmissionId ?? 'new'} submissionId={selectedSubmissionId || undefined} onNavigate={handleNavigate} />;
       case 'history':
-        return <SubmissionHistory onNavigate={handleNavigate} />;
+        return <SchuleHistory onNavigate={handleNavigate} />;
       case 'new':
         // For Schule (school), show the new selection page. For Aufsicht (supervision), show the submission list
         return role === 'schule'
           ? <SchuleNew onNavigate={handleNavigate} />
-          : <SubmissionNew onNavigate={handleNavigate} />;
+          : <AufsichtNew onNavigate={handleNavigate} />;
       case 'new-create':
         return <FormEditor key="new-create" onNavigate={handleNavigate} submissionId={undefined} parentView="new" showLoadDraft={false} />;
       case 'new-load':
         return <FormEditor key="new-load" onNavigate={handleNavigate} submissionId={undefined} parentView="new" showLoadDraft={true} />;
       case 'all':
-        return <SubmissionAll onNavigate={handleNavigate} />;
+        return <AufsichtAll onNavigate={handleNavigate} />;
       case 'view':
         return role === 'schule' 
           ? <SchuleSubmissionView schulnummer={selectedSubmissionId} onNavigate={handleNavigate} />
