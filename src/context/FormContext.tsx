@@ -1,5 +1,5 @@
 import { useCallback, useState, useEffect, type ReactNode } from 'react';
-import { getCommentsForSubmission, getSubmission, saveComment, saveSubmission, initializeWithMockData } from '../utils/database';
+import { getCommentsForSubmission, getSubmission, saveComment, saveSubmission } from '../utils/database';
 import { FormContext, roleFromShell, type FieldMode, type Role, type SubmissionStatus } from './formContextValue';
 import type { Comment, Submission, ShellContext } from '../types';
 
@@ -11,21 +11,19 @@ export function FormContextProvider({
   shellContext?: ShellContext;
 }) {
   const activeRole = shellContext?.activeRole;
+  // Derive role from shell context - update when activeRole changes
   const [role, setRole] = useState<Role>(() => roleFromShell(shellContext));
 
-  // Keep the role in sync with the shell's active role
+  // Sync role when shell's active role changes
   useEffect(() => {
-    setRole(roleFromShell(shellContext));
+    const newRole = roleFromShell(shellContext);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setRole(newRole);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeRole]);
   const [submission, setSubmission] = useState<Submission | null>(null);
   const [comments, setComments] = useState<Record<string, Comment>>({});
   const [isLoading, setIsLoading] = useState(false);
-
-  // Initialize database with mock data on mount
-  useEffect(() => {
-    void initializeWithMockData();
-  }, []);
 
   const getFieldMode = (): FieldMode => {
     if (!submission) return 'edit';

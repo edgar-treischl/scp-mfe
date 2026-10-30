@@ -9,16 +9,10 @@ import { ContractModal } from '../components/ContractModal';
 import { formStyles } from '../components/formStyles';
 import { NewIcon, LoadTemplateIcon, CopyIcon } from '../assets/icons';
 import { FORM_GOAL_OPTIONS } from '../utils/formConstants';
-import { mockDraft, mockSubmitted, type QuestionModule, type MeasureModule } from '../mocks/formData';
+import { mockDraft, mockSubmitted } from '../mocks/formData';
 
 import type { Submission } from '../types';
-
-interface FormEditorProps {
-  onNavigate: (view: 'landing' | 'select' | 'form' | 'history' | 'view' | 'about' | 'eval' | 'new' | 'new-create' | 'new-load' | 'all' | 'data', submissionId?: string) => void;
-  submissionId?: string;
-  parentView?: 'new';
-  showLoadDraft?: boolean;
-}
+import type { FormEditorProps, QuestionModule, MeasureModule } from '../types/form';
 
 // Self-contained mock data for FormEditor
 
@@ -436,7 +430,6 @@ export function FormEditor({ onNavigate, submissionId, parentView, showLoadDraft
     hydratedIdRef.current = submissionId;
 
     const data = submission.data;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setFormData({
       istStandAnalyse: (data.istStandAnalyse as string) || '',
       supportPersonnel: (data.supportPersonnel as boolean) ?? '',

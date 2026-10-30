@@ -1,31 +1,9 @@
-/* Form Input Styles - Professional styling for all form elements */
-
-:root {
-  --form-primary: #1e8ad9;
-  --form-success: #64d4c6;
-  --form-danger: #dc3545;
-  --form-border: #dee2e6;
-  --form-border-focus: #1e8ad9;
-  --form-bg: #ffffff;
-  --form-bg-hover: #f8f9fa;
-  --form-text: #212529;
-  --form-text-muted: #6c757d;
-  --form-disabled: #e9ecef;
-  --form-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
-  --form-shadow-focus: 0 0 0 3px rgba(30, 138, 217, 0.1);
-  --form-transition: all 0.2s ease;
-}
-
-/* Dark mode disabled - force light mode for all forms */
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --form-bg: #1f2937;
-    --form-bg-hover: #374151;
-    --form-text: #f3f4f6;
-    --form-text-muted: #9ca3af;
-    --form-border: #4b5563;
-  }
-} */
+/* ===================================================================
+   FORM INPUT STYLES
+   ===================================================================
+   Professional styling for all form elements and input components.
+   All design tokens (colors, shadows, etc.) are defined in index.css
+   =================================================================== */
 
 /* Base input styles */
 input[type="text"],

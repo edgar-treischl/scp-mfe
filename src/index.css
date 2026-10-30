@@ -1,7 +1,38 @@
+/* ===================================================================
+   GLOBAL STYLES & DESIGN TOKENS
+   ===================================================================
+   This file defines global styles and design tokens (CSS variables)
+   for the entire application. All components should use these tokens
+   for consistent theming and easier maintenance.
+   =================================================================== */
+
 :root {
+  /* Typography */
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
+  /* Color Palette - Primary */
+  --form-primary: #1e8ad9;
+  --form-success: #64d4c6;
+  --form-danger: #dc3545;
+  --form-warning: #ffc107;
+  --form-info: #17a2b8;
+
+  /* Color Palette - UI */
+  --form-bg: #ffffff;
+  --form-bg-hover: #f8f9fa;
+  --form-text: #212529;
+  --form-text-muted: #6c757d;
+  --form-border: #dee2e6;
+  --form-border-focus: #1e8ad9;
+  --form-disabled: #e9ecef;
+
+  /* Shadows & Effects */
+  --form-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.08);
+  --form-shadow-focus: 0 0 0 3px rgba(30, 138, 217, 0.1);
+  --form-transition: all 0.2s ease;
+
+  /* Typography */
   font: 16px/1.5 var(--sans);
   letter-spacing: 0.18px;
   color-scheme: light;
@@ -11,8 +42,20 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --form-bg: #1f2937;
+    --form-bg-hover: #374151;
+    --form-text: #f3f4f6;
+    --form-text-muted: #9ca3af;
+    --form-border: #4b5563;
+  }
+}
+
+/* Base Element Styles */
 body {
   margin: 0;
-  background: #fff;
-  color: #212529;
+  background: var(--form-bg);
+  color: var(--form-text);
 }
