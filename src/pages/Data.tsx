@@ -244,8 +244,8 @@ export function Data({ onNavigate }: DataProps) {
               Regelmäßige Rückmeldung an Schulen, wie ihre Daten genutzt werden.
             </li>
             <li>
-              Beispiele für konkrete Nutzen (z. B. „Auf Basis Ihrer Daten
-              konnten wir X verbessern").
+              Beispiele für konkrete Nutzen (z. B. &quot;Auf Basis Ihrer Daten
+              konnten wir X verbessern&quot;).
             </li>
           </ul>
 
