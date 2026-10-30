@@ -35,22 +35,10 @@
   /* Typography */
   font: 16px/1.5 var(--sans);
   letter-spacing: 0.18px;
-  color-scheme: light;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-/* Dark Mode Support */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --form-bg: #1f2937;
-    --form-bg-hover: #374151;
-    --form-text: #f3f4f6;
-    --form-text-muted: #9ca3af;
-    --form-border: #4b5563;
-  }
 }
 
 /* Base Element Styles */
