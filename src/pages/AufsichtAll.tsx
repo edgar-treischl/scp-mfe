@@ -234,59 +234,17 @@ export function AufsichtAll({ onNavigate }: AufsichtAllProps) {
       </header>
 
       {/* Tab Navigation */}
-      <div style={{ marginTop: '2rem', borderBottom: '2px solid #ddd' }}>
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+      <div className="tab-navigation">
+        <div className="tab-container">
           <button
             onClick={() => setActiveTab('schoolStatus')}
-            style={{
-              padding: '0.75rem 1.5rem',
-              fontSize: '0.95rem',
-              fontWeight: activeTab === 'schoolStatus' ? '600' : '400',
-              background: activeTab === 'schoolStatus' ? '#1E8AD9' : 'transparent',
-              color: activeTab === 'schoolStatus' ? 'white' : '#333',
-              border: 'none',
-              borderBottom: activeTab === 'schoolStatus' ? '3px solid #1E8AD9' : 'none',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              marginBottom: '-2px',
-            }}
-            onMouseOver={(e) => {
-              if (activeTab !== 'schoolStatus') {
-                e.currentTarget.style.background = '#f0f0f0';
-              }
-            }}
-            onMouseOut={(e) => {
-              if (activeTab !== 'schoolStatus') {
-                e.currentTarget.style.background = 'transparent';
-              }
-            }}
+            className={`tab-button ${activeTab === 'schoolStatus' ? 'active' : ''}`}
           >
             Aktuelles Schuljahr
           </button>
           <button
             onClick={() => setActiveTab('submissions')}
-            style={{
-              padding: '0.75rem 1.5rem',
-              fontSize: '0.95rem',
-              fontWeight: activeTab === 'submissions' ? '600' : '400',
-              background: activeTab === 'submissions' ? '#1E8AD9' : 'transparent',
-              color: activeTab === 'submissions' ? 'white' : '#333',
-              border: 'none',
-              borderBottom: activeTab === 'submissions' ? '3px solid #1E8AD9' : 'none',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              marginBottom: '-2px',
-            }}
-            onMouseOver={(e) => {
-              if (activeTab !== 'submissions') {
-                e.currentTarget.style.background = '#f0f0f0';
-              }
-            }}
-            onMouseOut={(e) => {
-              if (activeTab !== 'submissions') {
-                e.currentTarget.style.background = 'transparent';
-              }
-            }}
+            className={`tab-button ${activeTab === 'submissions' ? 'active' : ''}`}
           >
             Alle Einreichungen
           </button>
