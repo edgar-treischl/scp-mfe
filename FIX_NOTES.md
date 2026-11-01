@@ -1,110 +1,55 @@
 # Module Federation CSS Loading Fix
 
-## Problem
-When importing the `scp-form-mfe` microfrontend via Vite Module Federation in the shell app, the following error occurred:
+## Root cause
 
-```
-e.forEach is not a function
-```
+The shell's `e.forEach is not a function` error comes from the generated
+`remoteEntry.js` CSS loader receiving a string instead of an array.
 
-This error originated from the auto-generated `remoteEntry.js` file where a stray `'assets'` string literal was being evaluated, causing the variable `e` to be undefined when `.forEach()` was called on it.
-
-### Root Cause
-The `@originjs/vite-plugin-federation@1.4.1` plugin generates a `remoteEntry.js` file with a CSS loading function. Due to a quirk in the plugin, the generated code contained:
+`@originjs/vite-plugin-federation@1.4.1` initially generates a CSS placeholder:
 
 ```javascript
-// Problematic code
-const base = '/scp-mfe/';
-'assets';  // <-- This stray statement does nothing
-cssFilePaths.forEach(e => { ... })  // e.forEach works, but appears to fail in some contexts
+dynamicLoadingCss('__v__css__/path/to/src/App.tsx', false, './ScpApp');
 ```
 
-When minified, this became:
+During `generateBundle`, the plugin replaces that placeholder with the emitted
+CSS filenames. Its replacement regex matches single- and double-quoted strings,
+but not backtick-delimited strings.
+
+With Vite 8's default minifier enabled, the placeholder becomes a template literal
+before that replacement runs:
+
 ```javascript
-o='/scp-mfe/';'assets',e.forEach(...)
+dynamicLoadingCss(`__v__css__/path/to/src/App.tsx`, false, `./ScpApp`);
 ```
 
-In certain execution contexts (particularly when imported via Module Federation), this stray statement could interfere with proper code execution.
+The placeholder remains unresolved, and the loader calls `.forEach()` on it.
+The unused `'assets'` expression is harmless; removing it does not fix the
+argument type. The previous post-build script addressed the wrong cause.
 
-## Solution
-A post-build fix script (`scripts/fix-remote-entry.js`) has been added that:
+## Fix
 
-1. **Removes the stray `'assets'` string literal** from the generated `remoteEntry.js` file after each build
-2. **Handles both minified and unminified code** through multiple regex patterns
-3. **Runs automatically** as part of the `yarn build` command
+Set `build.minify: false` in `vite.config.ts` so the plugin can recognize and
+replace its CSS placeholder. Keep `cssCodeSplit: false`, the `/scp-mfe/` base
+path, and the exposed `./ScpApp` module unchanged.
 
-### Changes Made
+The build now produces a call like:
 
-#### 1. Created `scripts/fix-remote-entry.js`
-This Node.js script:
-- Runs after Vite builds the distribution files
-- Detects and removes stray `'assets'` statements in both minified and unminified forms
-- Provides clear feedback about the fixes applied
-- Exits with an error if `dist/assets/remoteEntry.js` is not found
-
-#### 2. Updated `package.json`
-Modified the build script from:
-```json
-"build": "tsc -b && vite build"
-```
-
-To:
-```json
-"build": "tsc -b && vite build && node scripts/fix-remote-entry.js"
-```
-
-## Verification
-
-After running `yarn build`, you should see:
-```
-✓ Fixed remoteEntry.js: removed stray "assets" string literal
-```
-
-The fix handles these patterns:
-
-**Unminified:**
 ```javascript
-const base = '/scp-mfe/';
-'assets';
-cssFilePaths.forEach(...)
-```
-↓
-```javascript
-const base = '/scp-mfe/';
-cssFilePaths.forEach(...)
+dynamicLoadingCss(["style-<hash>.css"], false, "./ScpApp");
 ```
 
-**Minified (with single quotes):**
-```javascript
-o='/scp-mfe/';'assets',e.forEach(...)
-```
-↓
-```javascript
-o='/scp-mfe/';e.forEach(...)
-```
+The CSS loader resolves this filename relative to the remote entry's assets
+directory. No generated-file rewriting is needed, so the post-build script
+has been removed.
 
-## Testing
+This compatibility setting increases production bundle sizes. Re-enable
+minification only after the federation plugin supports the minifier's output.
 
-To verify the fix:
+## Verification and deployment
 
-1. Build the project:
-   ```bash
-   yarn build
-   ```
+Run `yarn build`. In `dist/assets/remoteEntry.js`, the `./ScpApp` CSS loader
+argument must be an array of emitted CSS filenames, with no `__v__css__`
+placeholder remaining.
 
-2. Check that the build completes successfully with the fix message
-
-3. The shell app should now be able to import the `./ScpApp` module without the `e.forEach is not a function` error
-
-## Future Considerations
-
-- **Plugin Update**: If `@originjs/vite-plugin-federation` releases a new version that fixes this issue, this workaround can be removed
-- **Alternative Plugins**: Consider evaluating other Module Federation plugins that may not have this issue
-- **Upstream Report**: This issue could be reported to the @originjs project for permanent fixes in future versions
-
-## References
-
-- Project: `scp-form-mfe` (React Microfrontend)
-- Federation Plugin: `@originjs/vite-plugin-federation@1.4.1`
-- Base Path: `/scp-mfe/` (for GitHub Pages deployment)
-- Generated Entry Point: `dist/assets/remoteEntry.js`
+Deploy the rebuilt output to GitHub Pages. The shell must load the new
+`/scp-mfe/assets/remoteEntry.js`; a cached version of the old file will still fail.

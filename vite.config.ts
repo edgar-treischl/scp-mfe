@@ -34,6 +34,7 @@ export default defineConfig({
   build: {
     target: 'esnext',
     cssCodeSplit: false,
-    minify: true,
+    // OriginJS's CSS placeholder replacement does not recognize Vite 8's minified backticks.
+    minify: false,
   },
 });
