@@ -5,10 +5,15 @@ interface LandingProps extends ShellAppProps {
   onNavigate: (view: 'landing' | 'select' | 'form' | 'history' | 'view' | 'new' | 'all') => void;
 }
 
-export function Landing({ onNavigate, shellContext }: LandingProps) {
-  const forceHide = import.meta.env.VITE_FORCE_HIDE_ROLE_SELECTOR === 'true';
-  const useLocal = import.meta.env.VITE_USE_LOCAL_ROLE_SELECTOR === 'true';
-  const showStart = !!shellContext || (!forceHide && useLocal);
+export function Landing({ onNavigate, shellContext: _shellContext }: LandingProps) { // eslint-disable-line @typescript-eslint/no-unused-vars
+  // TODO: HARDCODED FOR TESTING - REMOVE THESE LINES WHEN NO LONGER NEEDED
+  // const forceHide = import.meta.env.VITE_FORCE_HIDE_ROLE_SELECTOR === 'true';
+  // const useLocal = import.meta.env.VITE_USE_LOCAL_ROLE_SELECTOR === 'true';
+  // const showStart = !!shellContext || (!forceHide && useLocal);
+  // HARDCODED: Always show start button regardless of shellContext
+  const showStart = true;
+
+
 
   const logoLeft = new URL('../utils/assets/startchancen.png', import.meta.url).href;
   const logoRight = new URL('../utils/assets/isb_raute.png', import.meta.url).href;
