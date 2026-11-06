@@ -3,6 +3,7 @@ import type { Comment, Submission, ShellContext } from '../types';
 
 export type Role = 'schule' | 'schulamt';
 // Maps the shell's active role to the app role; admin starts as schule (selector available)
+// Unsupported roles default to 'schule' to ensure the app starts gracefully
 export function roleFromShell(shellContext?: ShellContext): Role {
   if (!shellContext) return 'schule';
   switch (shellContext.activeRole) {
@@ -12,7 +13,8 @@ export function roleFromShell(shellContext?: ShellContext): Role {
     case 'admin':
       return 'schule';
     default:
-      throw new Error(`Unsupported shell role: ${shellContext.activeRole}`);
+      console.warn(`Unsupported shell role: ${shellContext.activeRole}, defaulting to schule`);
+      return 'schule';
   }
 }
 
