@@ -12,48 +12,15 @@ export function FormContextProvider({
 }) {
   const [initError, setInitError] = useState<Error | null>(null);
   const [role, setRole] = useState<Role>('schule');
-
   useEffect(() => {
     try {
       const newRole = roleFromShell(shellContext);
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- Sync the role supplied by the shell.
       setRole(newRole);
     } catch (error) {
       setInitError(error instanceof Error ? error : new Error('Unknown initialization error'));
     }
-  }, [shellContext?.activeRole]);
-
-  if (initError) {
-    return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        minHeight: '100vh',
-        padding: '20px',
-        backgroundColor: '#f5f5f5',
-      }}>
-        <div style={{
-          backgroundColor: 'white',
-          padding: '40px',
-          borderRadius: '8px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-          maxWidth: '500px',
-          textAlign: 'center',
-        }}>
-          <h1 style={{ color: '#d32f2f', marginBottom: '16px' }}>Konfigurationsfehler</h1>
-          <p style={{ color: '#666', marginBottom: '16px', lineHeight: '1.6' }}>
-            Die App konnte nicht initialisiert werden. Die von der Shell-Anwendung übergebene Benutzerrolle wird nicht unterstützt.
-          </p>
-          <p style={{ color: '#999', fontSize: '14px', marginBottom: '24px', fontFamily: 'monospace' }}>
-            {initError.message}
-          </p>
-          <p style={{ color: '#666', fontSize: '14px' }}>
-            Bitte kontaktieren Sie den technischen Support oder versuchen Sie, sich erneut anzumelden.
-          </p>
-        </div>
-      </div>
-    );
-  }
+  }, [shellContext]);
 
   const [submission, setSubmission] = useState<Submission | null>(null);
   const [comments, setComments] = useState<Record<string, Comment>>({});
@@ -162,6 +129,39 @@ export function FormContextProvider({
       console.warn('Could not persist submission status', error);
     }
   };
+
+  if (initError) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        minHeight: '100vh',
+        padding: '20px',
+        backgroundColor: '#f5f5f5',
+      }}>
+        <div style={{
+          backgroundColor: 'white',
+          padding: '40px',
+          borderRadius: '8px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+          maxWidth: '500px',
+          textAlign: 'center',
+        }}>
+          <h1 style={{ color: '#d32f2f', marginBottom: '16px' }}>Konfigurationsfehler</h1>
+          <p style={{ color: '#666', marginBottom: '16px', lineHeight: '1.6' }}>
+            Die App konnte nicht initialisiert werden. Die von der Shell-Anwendung übergebene Benutzerrolle wird nicht unterstützt.
+          </p>
+          <p style={{ color: '#999', fontSize: '14px', marginBottom: '24px', fontFamily: 'monospace' }}>
+            {initError.message}
+          </p>
+          <p style={{ color: '#666', fontSize: '14px' }}>
+            Bitte kontaktieren Sie den technischen Support oder versuchen Sie, sich erneut anzumelden.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <FormContext.Provider
