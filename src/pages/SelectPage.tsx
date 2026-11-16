@@ -1,4 +1,4 @@
-import { useFormContext } from '../context/formContextValue';
+import { useFormContext, roleFromShell } from '../context/formContextValue';
 import { AddIcon, ManageIcon } from '../assets/icons';
 import { formStyles } from '../components/formStyles';
 import { Breadcrumb } from '../components';
@@ -18,21 +18,17 @@ interface SelectPageProps extends ShellAppProps {
   onNavigate: (view: 'landing' | 'select' | 'form' | 'history' | 'view' | 'new' | 'new-create' | 'new-load' | 'all') => void;
 }
 
-export function SelectPage({ onNavigate, shellContext: _shellContext }: SelectPageProps) { // eslint-disable-line @typescript-eslint/no-unused-vars
+export function SelectPage({ onNavigate, shellContext }: SelectPageProps) {
   const { role: selectedRole, setRole } = useFormContext();
 
-  // TODO: HARDCODED FOR TESTING - REMOVE THESE LINES WHEN NO LONGER NEEDED
-  // const forceHide = import.meta.env.VITE_FORCE_HIDE_ROLE_SELECTOR === 'true';
-  // const useLocal = import.meta.env.VITE_USE_LOCAL_ROLE_SELECTOR === 'true';
-  // const showRoleSelector = !forceHide && (useLocal || shellContext?.activeRole === 'admin');
-  // HARDCODED: Always show role selector regardless of shellContext
-  const showRoleSelector = true;
+  // Selector only for admins or local testing; the env flag can force-hide it
+  const forceHide = import.meta.env.VITE_FORCE_HIDE_ROLE_SELECTOR === 'true';
+  const useLocal = import.meta.env.VITE_USE_LOCAL_ROLE_SELECTOR === 'true';
+  const showRoleSelector = !forceHide && (useLocal || shellContext?.activeRole === 'admin');
 
   // Without the selector, the role comes only from the ShellContext
-  // HARDCODED: Use selectedRole regardless of shellContext
-  // const shellRole = roleFromShell(shellContext);
-  // const role = showRoleSelector ? selectedRole : shellRole;
-  const role = selectedRole;
+  const shellRole = roleFromShell(shellContext);
+  const role = showRoleSelector ? selectedRole : shellRole;
 
   const handleRoleChange = (newRole: 'schule' | 'schulamt') => {
     setRole(newRole);
